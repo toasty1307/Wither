@@ -1,5 +1,7 @@
-﻿using Reactor.Extensions;
+﻿using Reactor;
+using Reactor.Extensions;
 using UnityEngine;
+using Wither.CustomRpc;
 using Wither.Utils;
 
 namespace Wither.Buttons
@@ -10,7 +12,7 @@ namespace Wither.Buttons
 
         protected override void OnClick()
         {
-            InstantiateBedrock(PlayerControl.LocalPlayer.transform.position);
+            Rpc<InstantiateBedrockRpc>.Instance.Send(new InstantiateBedrockRpc.Data(PlayerControl.LocalPlayer.transform.position));
         }
 
         protected override bool CanUse()
@@ -24,7 +26,7 @@ namespace Wither.Buttons
             GameObject bedrockInstantiated = Object.Instantiate(bedrock, ShipStatus.Instance.transform);
             bedrockInstantiated.transform.localScale /= 3;
             bedrockInstantiated.transform.position = position;
-            bedrockInstantiated.layer = Constants.ShipAndObjectsMask;
+            bedrockInstantiated.layer = Constants.ShipOnlyMask;
             GlobalVars.bedrocks.Add(bedrockInstantiated);
         }
     }

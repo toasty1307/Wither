@@ -21,6 +21,8 @@ namespace Wither
         {
             Logger = Log;
 
+            RegisterCustomRpcAttribute.Register(this);
+            
             Harmony.PatchAll();
         }
     }
