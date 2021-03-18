@@ -23,6 +23,8 @@
     <ItemGroup>
       <None Remove="AssetBundles\buttontextures" />
       <EmbeddedResource Include="AssetBundles\buttontextures" />
+      <None Remove="AssetBundles\prefabs" />
+      <EmbeddedResource Include="AssetBundles\prefabs" />
     </ItemGroup>
 
     <Target Name="Copy" AfterTargets="Reobfuscate">

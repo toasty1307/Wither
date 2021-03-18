@@ -1,0 +1,30 @@
+ManifestFileVersion: 0
+CRC: 1019170052
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 21968dc5b335a518835fecd659c5fd63
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: e58db6f2bda5e49cf6db9a7a8c9fa7ee
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 68
+  Script: {instanceID: 0}
+- Class: 212
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+Assets:
+- Assets/Wither/prefabs/Bedrock.prefab
+Dependencies: []

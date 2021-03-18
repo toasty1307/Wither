@@ -8,6 +8,8 @@ namespace Wither.Utils
     public static class AssetBundleLoader
     {
         public static AssetBundle ButtonTextureBundle { get; private set; }
+        
+        public static AssetBundle PrefabBundle { get; private set; }
 
         public static void LoadBundles()
         {
@@ -18,6 +20,11 @@ namespace Wither.Utils
             using (stream = executingAssembly.GetManifestResourceStream("Wither.AssetBundles.buttontextures"))
                 ButtonTextureBundle = AssetBundle.LoadFromMemory(stream.ReadFully());
             // ButtonTextureBundle
+            
+            // PrefabBundle
+            using (stream = executingAssembly.GetManifestResourceStream("Wither.AssetBundles.prefabs"))
+                PrefabBundle = AssetBundle.LoadFromMemory(stream.ReadFully());
+            // PrefabBundle
         }
     }
 }

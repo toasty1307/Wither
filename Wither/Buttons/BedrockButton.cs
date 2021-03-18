@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Reactor.Extensions;
+using UnityEngine;
 using Wither.Utils;
 
 namespace Wither.Buttons
@@ -9,12 +10,22 @@ namespace Wither.Buttons
 
         protected override void OnClick()
         {
-            
+            InstantiateBedrock(PlayerControl.LocalPlayer.transform.position);
         }
 
         protected override bool CanUse()
         {
             return base.CanUse() && !PlayerControl.LocalPlayer.Data.IsImpostor;
+        }
+
+        public static void InstantiateBedrock(Vector2 position)
+        {
+            GameObject bedrock = AssetBundleLoader.PrefabBundle.LoadAsset<GameObject>("Bedrock");
+            GameObject bedrockInstantiated = Object.Instantiate(bedrock, ShipStatus.Instance.transform);
+            bedrockInstantiated.transform.localScale /= 3;
+            bedrockInstantiated.transform.position = position;
+            bedrockInstantiated.layer = 11;
+            GlobalVars.bedrocks.Add(bedrockInstantiated);
         }
     }
 }
