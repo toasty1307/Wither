@@ -20,7 +20,7 @@ namespace Wither
         public override void Load()
         {
             Logger = Log;
-            
+
             Harmony.PatchAll();
         }
     }

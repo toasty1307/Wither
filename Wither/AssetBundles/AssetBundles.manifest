@@ -1,0 +1,7 @@
+ManifestFileVersion: 0
+CRC: 1683568117
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: buttontextures
+      Dependencies: {}
