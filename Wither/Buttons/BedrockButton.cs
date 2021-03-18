@@ -24,7 +24,7 @@ namespace Wither.Buttons
             GameObject bedrockInstantiated = Object.Instantiate(bedrock, ShipStatus.Instance.transform);
             bedrockInstantiated.transform.localScale /= 3;
             bedrockInstantiated.transform.position = position;
-            bedrockInstantiated.layer = 11;
+            bedrockInstantiated.layer = Constants.ShipAndObjectsMask;
             GlobalVars.bedrocks.Add(bedrockInstantiated);
         }
     }
