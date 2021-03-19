@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 1019170052
+CRC: 537641081
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 21968dc5b335a518835fecd659c5fd63
+    Hash: 63aaf4bb9a3d37e83fb58d5ebcb8d726
   TypeTreeHash:
     serializedVersion: 2
-    Hash: e58db6f2bda5e49cf6db9a7a8c9fa7ee
+    Hash: d3d86affed237c846f387b8116ada2b2
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -21,10 +21,17 @@ ClassTypes:
   Script: {instanceID: 0}
 - Class: 68
   Script: {instanceID: 0}
+- Class: 108
+  Script: {instanceID: 0}
+- Class: 198
+  Script: {instanceID: 0}
+- Class: 199
+  Script: {instanceID: 0}
 - Class: 212
   Script: {instanceID: 0}
 - Class: 213
   Script: {instanceID: 0}
 Assets:
+- Assets/Standard Assets/ParticleSystems/Prefabs/Explosion.prefab
 - Assets/Wither/prefabs/Bedrock.prefab
 Dependencies: []

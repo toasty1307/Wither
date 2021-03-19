@@ -13,9 +13,9 @@ namespace Wither.Patches
                 var collider = bedrock.GetComponent<Collider2D>();
                 if (collider != null)     
                     collider.enabled = PlayerControl.LocalPlayer.Data.IsImpostor && GlobalVars.isTransformed;
-                HudManager.Instance.ReportButton.gameObject.SetActive(false);
-                HudManager.Instance.KillButton.gameObject.SetActive(false);
             }
+            HudManager.Instance.ReportButton.gameObject.SetActive(false);
+            HudManager._instance.KillButton.gameObject.SetActive(false);
         }
     }
 }
