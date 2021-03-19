@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UnhollowerBaseLib;
+using UnityEngine;
 using Wither.Utils;
 
 namespace Wither.Buttons
@@ -14,7 +15,7 @@ namespace Wither.Buttons
 
         protected override bool CanUse()
         {
-            return base.CanUse() && PlayerControl.LocalPlayer.Data.IsImpostor;
+            return base.CanUse() && PlayerControl.LocalPlayer.Data.IsImpostor && GlobalVars.isTransformed;
         }
     }
 }

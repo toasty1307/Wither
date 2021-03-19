@@ -1,6 +1,4 @@
-﻿// Credits to https://gist.github.com/gabriel-nsiqueira/827dea0a1cdc2210db6f9a045ec4ce0a and https://gist.github.com/naturecodevoid/1c61786e6a95d7d093f495b6e67aad29 for the original code.
-
-using HarmonyLib;
+﻿using HarmonyLib;
 using System;
 using System.Collections.Generic;
 using InnerNet;
@@ -192,6 +190,12 @@ namespace Wither.Utils
                 CanUse,
                 HudManager.Instance
             );
+        }
+
+        ~Button()
+        {
+            CooldownButton.buttons.Remove(button);
+            button = null;
         }
 
         protected virtual void OnClick()

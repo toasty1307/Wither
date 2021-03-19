@@ -9,7 +9,7 @@ namespace Wither.Buttons
 
         protected override void OnClick()
         {
-            
+            GlobalVars.isTransformed = true;
         }
 
         protected override bool CanUse()

@@ -1,0 +1,6 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:Boolean x:Key="/Default/AddReferences/RecentPaths/=C_003A_005CUsers_005Csharm_005COneDrive_005CDocuments_005CAmongUs_005C2021_002E3_002E5M_005CBepInEx_005Cplugins_005CReactor_002EDebugger_002D2021_002E3_002E5s_002Edll/@EntryIndexedValue">True</s:Boolean>
+	<s:String x:Key="/Default/Environment/AssemblyExplorer/XmlDocument/@EntryValue">&lt;AssemblyExplorer&gt;&#xD;
+  &lt;Assembly Path="C:\Users\sharm\OneDrive\Documents\AmongUs\2021.3.5M\BepInEx\plugins\Reactor.Debugger-2021.3.5s.dll" /&gt;&#xD;
+  &lt;Assembly Path="C:\Users\sharm\AppData\Roaming\.reactor\2021.3.5s\4d20b68e7b8fad34c1548b34fdd08d76\references\Assembly-CSharp-Deobfuscated.dll" /&gt;&#xD;
+&lt;/AssemblyExplorer&gt;</s:String></wpf:ResourceDictionary>

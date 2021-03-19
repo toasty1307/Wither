@@ -15,13 +15,15 @@ namespace Wither
 
         public Harmony Harmony { get; } = new Harmony(Id);
         
-        public ManualLogSource Logger { get; private set; }
+        public static ManualLogSource Logger { get; private set; }
         
         public override void Load()
         {
             Logger = Log;
 
             RegisterCustomRpcAttribute.Register(this);
+
+            RegisterInIl2CppAttribute.Register();
             
             Harmony.PatchAll();
         }

@@ -7,5 +7,6 @@
         public static float BreakCooldown = 5f;
         public static float BedrockCooldown = 5f;
         public static float SkullCooldown = 5f;
+        public static float ExplosionRadius = 3f;
     }
 }

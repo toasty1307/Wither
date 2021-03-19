@@ -10,7 +10,11 @@ namespace Wither.Patches
         {
             foreach (var bedrock in GlobalVars.bedrocks)
             {
-                bedrock.GetComponent<Collider2D>().enabled = GlobalVars.isTransformed;
+                var collider = bedrock.GetComponent<Collider2D>();
+                if (collider != null)     
+                    collider.enabled = PlayerControl.LocalPlayer.Data.IsImpostor && GlobalVars.isTransformed;
+                HudManager.Instance.ReportButton.gameObject.SetActive(false);
+                HudManager.Instance.KillButton.gameObject.SetActive(false);
             }
         }
     }
