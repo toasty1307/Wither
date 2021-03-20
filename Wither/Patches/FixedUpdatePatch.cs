@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using UnityEngine;
+using Wither.Buttons;
 
 namespace Wither.Patches
 {
@@ -8,11 +9,11 @@ namespace Wither.Patches
     {
         public static void Postfix()
         {
-            foreach (var bedrock in GlobalVars.bedrocks)
+            foreach (var bedrock in BedrockButton.bedrocks)
             {
                 var collider = bedrock.GetComponent<Collider2D>();
                 if (collider != null)     
-                    collider.enabled = PlayerControl.LocalPlayer.Data.IsImpostor && GlobalVars.isTransformed;
+                    collider.enabled = PlayerControl.LocalPlayer.Data.IsImpostor && TransformButton.isTransformed;
             }
             HudManager.Instance.ReportButton.gameObject.SetActive(false);
             HudManager._instance.KillButton.gameObject.SetActive(false);

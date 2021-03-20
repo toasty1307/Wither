@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using HarmonyLib;
 using UnityEngine;
+using Wither.Buttons;
 using Wither.Utils;
 
 namespace Wither.Patches
@@ -22,8 +23,8 @@ namespace Wither.Patches
             ButtonCreatorPatch.breakButton = null;
             AssetBundleLoader.ButtonTextureBundle.Unload(true);
             AssetBundleLoader.PrefabBundle.Unload(true);
-            GlobalVars.isTransformed = false;
-            GlobalVars.bedrocks = new List<GameObject>();
+            TransformButton.isTransformed = false;
+            BedrockButton.bedrocks = new List<GameObject>();
         }
     }
 }

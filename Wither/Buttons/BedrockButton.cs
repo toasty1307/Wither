@@ -1,4 +1,5 @@
-﻿using Reactor;
+﻿using System.Collections.Generic;
+using Reactor;
 using Reactor.Extensions;
 using UnityEngine;
 using Wither.CustomRpc;
@@ -9,6 +10,8 @@ namespace Wither.Buttons
     public class BedrockButton : Button
     {
         public BedrockButton(Vector2 _offset, float cooldown) : base(_offset, "BedrockImage", cooldown) { }
+        
+        public static List<GameObject> bedrocks = new List<GameObject>();
 
         protected override void OnClick()
         {
@@ -27,7 +30,7 @@ namespace Wither.Buttons
             bedrockInstantiated.transform.localScale /= 3;
             bedrockInstantiated.transform.position = position;
             bedrockInstantiated.layer = 9;
-            GlobalVars.bedrocks.Add(bedrockInstantiated);
+            bedrocks.Add(bedrockInstantiated);
         }
     }
 }

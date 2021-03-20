@@ -3,6 +3,7 @@ using BepInEx.IL2CPP;
 using BepInEx.Logging;
 using HarmonyLib;
 using Reactor;
+using Wither.Utils;
 
 namespace Wither
 {
@@ -26,6 +27,8 @@ namespace Wither
             RegisterInIl2CppAttribute.Register();
             
             Harmony.PatchAll();
+            
+            AssetBundleLoader.LoadBundles();
         }
     }
 }

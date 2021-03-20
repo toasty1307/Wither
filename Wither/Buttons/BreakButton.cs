@@ -14,7 +14,7 @@ namespace Wither.Buttons
 
         protected override bool CanUse()
         {
-            return base.CanUse() && PlayerControl.LocalPlayer.Data.IsImpostor && GlobalVars.isTransformed;
+            return base.CanUse() && PlayerControl.LocalPlayer.Data.IsImpostor && TransformButton.isTransformed;
         }
     }
 }

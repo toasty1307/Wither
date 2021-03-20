@@ -1,8 +1,5 @@
 ﻿using System;
 using HarmonyLib;
-using Reactor.Extensions;
-using UnityEngine;
-using Wither.MonoBehaviour;
 
 namespace Wither.Patches
 {
@@ -12,15 +9,6 @@ namespace Wither.Patches
         public static void Postfix()
         {
             AddVersionToMainMenu();
-            MakeNewAlwaysActiveGameObject();
-        }
-
-        private static void MakeNewAlwaysActiveGameObject()
-        {
-            if (AlwaysActive.Instance != null) return;
-            GameObject gameObject = new GameObject("AlwaysActive");
-            gameObject.AddComponent<AlwaysActive>();
-            gameObject.DontDestroyOnLoad();
         }
 
         public static void AddVersionToMainMenu()

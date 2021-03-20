@@ -6,10 +6,12 @@ namespace Wither.Buttons
     public class TransformButton : Button
     {
         public TransformButton(Vector2 _offset, float cooldown) : base(_offset, "TransformImage", cooldown) { }
+        
+        public static bool isTransformed = false;
 
         protected override void OnClick()
         {
-            GlobalVars.isTransformed = true;
+            isTransformed = true;
         }
 
         protected override bool CanUse()
