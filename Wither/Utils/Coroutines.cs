@@ -14,16 +14,19 @@ namespace Wither.Utils
             Reactor.Coroutines.Start(TakeDamage(target));
             currentlyWithered.Add(target);
             yield return new WaitForSeconds(CustomGameOptions.WitherDeathTime);
-            source.RpcMurderPlayer(target);
+            if (!target.Data.IsDead) source.RpcMurderPlayer(target);
             currentlyWithered.Remove(target);
             Rpc<InstantiateRoseRpc>.Instance.Send(new InstantiateRoseRpc.Data(target.transform.position));
         }
 
+        public static Dictionary<PlayerControl, Color32> colors = new Dictionary<PlayerControl, Color32>();
+        
         public static IEnumerator TakeDamage(PlayerControl target)
         {
             while (!target.Data.IsDead)
             {
                 var original = target.myRend.color;
+                colors.Add(target, original);
                 target.myRend.color = Color.red;
                 yield return new WaitForSeconds(0.5f);
                 target.myRend.color = original;

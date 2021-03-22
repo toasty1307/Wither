@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Il2CppSystem.Collections.Generic;
 using Il2CppSystem.Diagnostics.Tracing;
 using Reactor;
 using UnityEngine;
@@ -21,6 +22,7 @@ namespace Wither.MonoBehaviour
         {
             wither = GameData.Instance.AllPlayers.ToArray().Where(x => x.IsImpostor && !x.Disconnected).ToArray()[0]._object;
             target = wither.FindClosestTarget();
+
             transform.position += Vector3.forward * 0.001f;
             root = transform.GetChild(0);
             gameObject.layer = 9;

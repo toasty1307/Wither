@@ -24,7 +24,7 @@ namespace Wither.MonoBehaviour
             foreach (Collider2D collider2D in collider2Ds)
             {
                 var pc = collider2D.gameObject.GetComponent<PlayerControl>();
-                if (pc != null && pc != wither)
+                if (pc != null && pc != wither && !pc.Data.IsDead)
                 {
                     if (Utils.Coroutines.currentlyWithered.Contains(pc)) continue;
                     Coroutines.Start(Utils.Coroutines.Wither(wither, pc));

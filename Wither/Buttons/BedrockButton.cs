@@ -4,6 +4,7 @@ using Reactor.Extensions;
 using UnityEngine;
 using Wither.CustomRpc;
 using Wither.Utils;
+using Coroutines = Reactor.Coroutines;
 
 namespace Wither.Buttons
 {
@@ -30,7 +31,8 @@ namespace Wither.Buttons
             bedrockInstantiated.transform.localScale /= 3;
             bedrockInstantiated.transform.position = position;
             bedrockInstantiated.layer = 9;
-            bedrocks.Add(bedrockInstantiated);
+            bedrocks.Add(bedrockInstantiated); 
+            Object.Destroy(bedrockInstantiated, CustomGameOptions.BedrockDestroyTime);
         }
     }
 }

@@ -1,14 +1,10 @@
 ManifestFileVersion: 0
-CRC: 2260694781
+CRC: 2944286562
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
       Name: prefabs
       Dependencies: {}
     Info_1:
-      Name: newbundle
-      Dependencies:
-        Dependency_0: buttontextures
-    Info_2:
       Name: buttontextures
       Dependencies: {}

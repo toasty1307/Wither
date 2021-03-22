@@ -1,8 +1,6 @@
 ﻿using HarmonyLib;
-using Reactor.Extensions;
 using UnityEngine;
 using Wither.Buttons;
-using Wither.Utils;
 
 namespace Wither.Patches
 {
@@ -10,6 +8,7 @@ namespace Wither.Patches
     public static class ButtonCreatorPatch
     {
         public static TransformButton transformButton;
+        public static ReviveButton reviveButton;
         public static SkullButton skullButton;
         public static ExplodeButton explodeButton;
         public static BreakButton breakButton;
@@ -18,6 +17,7 @@ namespace Wither.Patches
         public static void Postfix()
         {
             transformButton = new TransformButton(Vector2.one * 0.125f, CustomGameOptions.TransformCooldown);
+            reviveButton = new ReviveButton(Vector2.one * 0.125f, CustomGameOptions.ReviveCooldown);
             skullButton = new SkullButton(Vector2.one * 1.250f, CustomGameOptions.SkullCooldown);
             explodeButton = new ExplodeButton(Vector2.right * 0.125f + Vector2.up * 1.250f, CustomGameOptions.ExplodeCooldown);
             breakButton = new BreakButton(Vector2.right * 1.250f + Vector2.up * 0.125f, CustomGameOptions.BreakCooldown);

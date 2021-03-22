@@ -16,7 +16,8 @@ namespace Wither.Buttons
             Collider2D[] colliders = Physics2D.OverlapCircleAll(PlayerControl.LocalPlayer.GetTruePosition(), CustomGameOptions.ExplosionRadius);
             foreach (var collider2D in colliders)
             {
-                if (collider2D.gameObject.GetComponent<PlayerControl>() != null && collider2D.gameObject.GetComponent<PlayerControl>() != PlayerControl.LocalPlayer)
+                PlayerControl pc = collider2D.gameObject.GetComponent<PlayerControl>();
+                if (pc != null &&  pc != PlayerControl.LocalPlayer && !pc.Data.IsDead)
                     PlayerControl.LocalPlayer.RpcMurderPlayer(collider2D.gameObject.GetComponent<PlayerControl>());
             }
 

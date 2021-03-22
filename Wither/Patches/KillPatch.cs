@@ -29,7 +29,7 @@ namespace Wither.Patches
 			GameData.PlayerInfo data = target.Data;
 			if (data == null || data.IsDead)
 			{
-				Debug.LogWarning("Missing target data for kill");
+				// Debug.LogWarning("Missing target data for kill");
 				return false;
 			}
 			if (__instance.AmOwner)
