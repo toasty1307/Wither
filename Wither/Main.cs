@@ -33,11 +33,6 @@ namespace Wither
             Harmony.PatchAll();
             
             AssetBundleLoader.LoadBundles();
-            
-            DateTime d = DateTime.Now;
-            BigInteger a = BigInteger.Pow(2, 10000);
-            Log.LogInfo(DateTime.Now - d);
-            Log.LogInfo(a.ToString());
         }
     }
 }
