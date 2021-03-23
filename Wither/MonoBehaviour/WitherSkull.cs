@@ -27,6 +27,7 @@ namespace Wither.MonoBehaviour
 
         private void FixedUpdate()
         {
+            if (target == null) return;
             root.LookAt(target.GetTruePosition());
             if (target.Data.IsDead || target.Data.Disconnected)
                 target = wither.FindClosestTarget();
