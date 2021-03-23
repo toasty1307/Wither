@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Linq;
-using Il2CppSystem.Collections.Generic;
-using Il2CppSystem.Diagnostics.Tracing;
 using Reactor;
 using UnityEngine;
 
@@ -23,32 +21,27 @@ namespace Wither.MonoBehaviour
             wither = GameData.Instance.AllPlayers.ToArray().Where(x => x.IsImpostor && !x.Disconnected).ToArray()[0]._object;
             target = wither.FindClosestTarget();
 
-            transform.position += Vector3.forward * 0.001f;
             root = transform.GetChild(0);
             gameObject.layer = 9;
-            InvokeRepeating(nameof(CheckForCollision), 0, 0.1f);
         }
 
         private void FixedUpdate()
         {
-            root.LookAt(target.gameObject.transform);
+            root.LookAt(target.GetTruePosition());
             if (target.Data.IsDead || target.Data.Disconnected)
                 target = wither.FindClosestTarget();
-            transform.position += root.forward * 0.1f;
+            transform.position += root.forward * (PlayerControl.GameOptions.PlayerSpeedMod * CustomGameOptions.GameOptions.WitherSkullSpeedMultiplier);
         }
 
-        private void CheckForCollision()
+        private void OnTriggerEnter2D(Collider2D other)
         {
-            Collider2D[] collider2Ds = Physics2D.OverlapCircleAll(transform.position, 0.25f);
-            foreach (Collider2D collider2D in collider2Ds)
-            {
-                var pc = collider2D.gameObject.GetComponent<PlayerControl>();
-                if (pc != null && pc != wither)
-                {
-                    Coroutines.Start(Utils.Coroutines.Wither(wither, target));
-                    Destroy(gameObject);
-                }
-            }
+            Main.Logger.LogInfo("TRIGGER SKULL!!!");
+
+            var pc = other.gameObject.GetComponent<PlayerControl>();
+            if (pc == null || pc == wither || pc.Data.IsDead) return;
+            if (Utils.Coroutines.currentlyWithered.Contains(pc)) return;
+            Coroutines.Start(Utils.Coroutines.Wither(wither, pc));
+            Destroy(gameObject);
         }
     }
 }

@@ -1,8 +1,12 @@
-﻿using BepInEx;
+﻿using System;
+using System.Numerics;
+using System.Runtime.CompilerServices;
+using BepInEx;
 using BepInEx.IL2CPP;
 using BepInEx.Logging;
 using HarmonyLib;
 using Reactor;
+using UnityEngine;
 using Wither.Utils;
 
 namespace Wither
@@ -29,6 +33,11 @@ namespace Wither
             Harmony.PatchAll();
             
             AssetBundleLoader.LoadBundles();
+            
+            DateTime d = DateTime.Now;
+            BigInteger a = BigInteger.Pow(2, 10000);
+            Log.LogInfo(DateTime.Now - d);
+            Log.LogInfo(a.ToString());
         }
     }
 }

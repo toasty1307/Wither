@@ -9,16 +9,20 @@ namespace Wither.Buttons
 {
     public class ExplodeButton : Button
     {
-        public ExplodeButton(Vector2 _offset, float cooldown) : base(_offset, "ExplodeImage", cooldown) { }
+        public ExplodeButton(Vector2 _offset, float cooldown) : base(_offset, Utils.StringNames.ExplodeImage, cooldown) { }
 
         protected override void OnClick()
         {
-            Collider2D[] colliders = Physics2D.OverlapCircleAll(PlayerControl.LocalPlayer.GetTruePosition(), CustomGameOptions.ExplosionRadius);
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(PlayerControl.LocalPlayer.GetTruePosition(), CustomGameOptions.GameOptions.ExplosionRadius);
             foreach (var collider2D in colliders)
             {
                 PlayerControl pc = collider2D.gameObject.GetComponent<PlayerControl>();
-                if (pc != null &&  pc != PlayerControl.LocalPlayer && !pc.Data.IsDead)
-                    PlayerControl.LocalPlayer.RpcMurderPlayer(collider2D.gameObject.GetComponent<PlayerControl>());
+                if (pc == null) continue;
+                Vector2 vector = pc.GetTruePosition() - PlayerControl.LocalPlayer.GetTruePosition();
+                float magnitude = vector.magnitude;
+                if (pc != PlayerControl.LocalPlayer && !pc.Data.IsDead
+                    && !PhysicsHelpers.AnyNonTriggersBetween(PlayerControl.LocalPlayer.GetTruePosition(), vector.normalized, magnitude, Constants.ShipAndObjectsMask))
+                    PlayerControl.LocalPlayer.RpcMurderPlayer(pc);
             }
 
             Rpc<InstantiateExplosionRpc>.Instance.Send(new InstantiateExplosionRpc.Data(PlayerControl.LocalPlayer.transform.position));
@@ -26,8 +30,8 @@ namespace Wither.Buttons
 
         public static void InstantiateExplosion(Vector2 position)
         {
-            GameObject effect = AssetBundleLoader.PrefabBundle.LoadAsset<GameObject>("Explosion");
-            GameObject instantiate = Object.Instantiate(effect, PlayerControl.LocalPlayer.transform);
+            GameObject effect = AssetBundleLoader.PrefabBundle.LoadAsset<GameObject>(Utils.StringNames.Explosion);
+            GameObject instantiate = Object.Instantiate(effect, position, Quaternion.identity);
             Object.Destroy(instantiate, 5f);
         }
 

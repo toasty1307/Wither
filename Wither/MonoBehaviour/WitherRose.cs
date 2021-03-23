@@ -15,21 +15,16 @@ namespace Wither.MonoBehaviour
         private void Start()
         {
             wither = GameData.Instance.AllPlayers.ToArray().Where(x => x.IsImpostor && !x.Disconnected).ToArray()[0]._object;
-            InvokeRepeating(nameof(CheckForCollision), 0, 0.25f);
         }
 
-        private void CheckForCollision()
+        private void OnTriggerEnter2D(Collider2D other)
         {
-            Collider2D[] collider2Ds = Physics2D.OverlapCircleAll(transform.position, 0.25f);
-            foreach (Collider2D collider2D in collider2Ds)
-            {
-                var pc = collider2D.gameObject.GetComponent<PlayerControl>();
-                if (pc != null && pc != wither && !pc.Data.IsDead)
-                {
-                    if (Utils.Coroutines.currentlyWithered.Contains(pc)) continue;
-                    Coroutines.Start(Utils.Coroutines.Wither(wither, pc));
-                }
-            }
+            Main.Logger.LogInfo("TRIGGER ROSE!!!");
+
+            var pc = other.gameObject.GetComponent<PlayerControl>();
+            if (pc == null || pc == wither || pc.Data.IsDead) return;
+            if (Utils.Coroutines.currentlyWithered.Contains(pc)) return;
+            Coroutines.Start(Utils.Coroutines.Wither(wither, pc));
         }
     }
 }

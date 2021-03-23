@@ -10,7 +10,7 @@ namespace Wither.Buttons
 {
     public class BedrockButton : Button
     {
-        public BedrockButton(Vector2 _offset, float cooldown) : base(_offset, "BedrockImage", cooldown) { }
+        public BedrockButton(Vector2 _offset, float cooldown) : base(_offset, Utils.StringNames.BedrockImage, cooldown) { }
         
         public static List<GameObject> bedrocks = new List<GameObject>();
 
@@ -26,13 +26,13 @@ namespace Wither.Buttons
 
         public static void InstantiateBedrock(Vector2 position)
         {
-            GameObject bedrock = AssetBundleLoader.PrefabBundle.LoadAsset<GameObject>("Bedrock");
+            GameObject bedrock = AssetBundleLoader.PrefabBundle.LoadAsset<GameObject>(Utils.StringNames.Bedrock);
             GameObject bedrockInstantiated = Object.Instantiate(bedrock, ShipStatus.Instance.transform);
             bedrockInstantiated.transform.localScale /= 3;
             bedrockInstantiated.transform.position = position;
             bedrockInstantiated.layer = 9;
             bedrocks.Add(bedrockInstantiated); 
-            Object.Destroy(bedrockInstantiated, CustomGameOptions.BedrockDestroyTime);
+            Object.Destroy(bedrockInstantiated, CustomGameOptions.GameOptions.DestroyBedrock ? CustomGameOptions.GameOptions.BedrockDestroyTime : float.MaxValue);
         }
     }
 }

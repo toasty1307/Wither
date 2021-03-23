@@ -3,20 +3,18 @@ using Reactor;
 using Reactor.Extensions;
 using UnityEngine;
 using Wither.Buttons;
-using Wither.MonoBehaviour;
-using Wither.Utils;
 
 namespace Wither.CustomRpc
 {
     [RegisterCustomRpc]
-    public class InstantiateRoseRpc : PlayerCustomRpc<Main, InstantiateRoseRpc.Data>
+    public class InstantiateCrackRpc : PlayerCustomRpc<Main, InstantiateCrackRpc.Data>
     {
-        public InstantiateRoseRpc(Main plugin) : base(plugin) { }
+        public InstantiateCrackRpc(Main plugin) : base(plugin) { }
 
         public readonly struct Data
         {
             public readonly Vector2 Position;
-            
+
             public Data(Vector2 position)
             {
                 Position = position;
@@ -37,10 +35,7 @@ namespace Wither.CustomRpc
 
         public override void Handle(PlayerControl innerNetObject, Data data)
         {
-            GameObject rose = AssetBundleLoader.PrefabBundle.LoadAsset<GameObject>(Utils.StringNames.WitherRose);
-            GameObject instantiate = Object.Instantiate(rose, ShipStatus.Instance.transform);
-            instantiate.transform.position = data.Position;
-            instantiate.AddComponent<WitherRose>();
+            BreakButton.InstantiateCrack(data.Position);
         }
     }
 }

@@ -18,6 +18,7 @@ namespace Wither.Patches
             HudManager.Instance.ReportButton.gameObject.SetActive(false);
             HudManager.Instance.KillButton.gameObject.SetActive(false);
             HudManager.Instance.ShadowQuad.gameObject.SetActive(false);
+            ButtonCreatorPatch.breakButton.button.KillButtonManager.renderer.material.SetFloat("_Desat", 1f);
         }
     }
 }

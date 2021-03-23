@@ -14,9 +14,6 @@ namespace Wither.Utils
         public Vector2 PositionOffset = Vector2.zero;
         public float MaxTimer = 0f;
         public float Timer = 0f;
-        public float EffectDuration = 0f;
-        public bool IsEffectActive;
-        public bool HasEffectDuration;
         public bool Enabled = true;
         public Func<bool> UseTester;
         private Dictionary<string, Texture2D> cache = new Dictionary<string, Texture2D>();
@@ -26,19 +23,9 @@ namespace Wither.Utils
         public HudManager HudManager;
         public bool CanUse_;
 
-        public CooldownButton(Action onClick, float cooldown, Sprite image, Vector2 positionOffset, Func<bool> useTester, HudManager hudManager, float effectDuration, Action onEffectEnd)
-        {
-            SetVars(onClick, cooldown, image, positionOffset, useTester, hudManager);
-            this.HasEffectDuration = true;
-            this.IsEffectActive = false;
-            this.OnEffectEnd = onEffectEnd;
-            this.EffectDuration = effectDuration;
-        }
-
         public CooldownButton(Action onClick, float cooldown, Sprite image, Vector2 positionOffset, Func<bool> useTester, HudManager hudManager)
         {
             SetVars(onClick, cooldown, image, positionOffset, useTester, hudManager);
-            this.HasEffectDuration = false;
             Update();
         }
         private void SetVars(Action onClick, float cooldown, Sprite image, Vector2 positionOffset, Func<bool> useTester, HudManager hudManager)
@@ -81,16 +68,7 @@ namespace Wither.Utils
                 if (Timer < 0f && CanUse_ && Enabled)
                 {
                     KillButtonManager.renderer.color = new Color(1f, 1f, 1f, 0.3f);
-                    if (HasEffectDuration)
-                    {
-                        IsEffectActive = true;
-                        Timer = EffectDuration;
-                        KillButtonManager.TimerText.Color = new Color(0, 255, 0);
-                    }
-                    else
-                    {
-                        Timer = MaxTimer;
-                    }
+                    Timer = MaxTimer;
                     OnClick();
                 }
             }
@@ -101,17 +79,10 @@ namespace Wither.Utils
                     KillButtonManager.renderer.color = new Color(1f, 1f, 1f, 1f);
                 else
                     KillButtonManager.renderer.color = new Color(1f, 1f, 1f, .3f);
-                if (IsEffectActive)
-                {
-                    KillButtonManager.TimerText.Color = new Color(255, 255, 255);
-                    Timer = MaxTimer;
-                    IsEffectActive = false;
-                    OnEffectEnd();
-                }
             }
             else
             {
-                if (CanUse_ && (PlayerControl.LocalPlayer.CanMove || IsEffectActive))
+                if (CanUse_ && (PlayerControl.LocalPlayer.CanMove))
                     Timer -= Time.deltaTime;
                 KillButtonManager.renderer.color = new Color(1f, 1f, 1f, 0.3f);
             }
@@ -164,7 +135,6 @@ namespace Wither.Utils
             {
                 CooldownButton.buttons[i].KillButtonManager.TimerText.Color = new Color(255, 255, 255);
                 CooldownButton.buttons[i].Timer = CooldownButton.buttons[i].MaxTimer;
-                CooldownButton.buttons[i].IsEffectActive = false;
                 CooldownButton.buttons[i].OnEffectEnd();
             }
         }

@@ -10,7 +10,7 @@ namespace Wither.Buttons
 {
     public class SkullButton : Button
     {
-        public SkullButton(Vector2 _offset, float cooldown) : base(_offset, "SkullImage", cooldown) { }
+        public SkullButton(Vector2 _offset, float cooldown) : base(_offset, Utils.StringNames.SkullImage, cooldown) { }
 
         protected override void OnClick()
         {
@@ -19,7 +19,7 @@ namespace Wither.Buttons
 
         public static void InstantiateSkull(Vector2 position)
         {
-            GameObject skull = AssetBundleLoader.PrefabBundle.LoadAsset<GameObject>("WitherSkull");
+            GameObject skull = AssetBundleLoader.PrefabBundle.LoadAsset<GameObject>(Utils.StringNames.WitherSkull);
             GameObject instantiate = Object.Instantiate(skull, ShipStatus.Instance.transform);
             instantiate.transform.position = position;
             instantiate.transform.localScale /= 2;

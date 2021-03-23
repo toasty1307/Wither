@@ -38,7 +38,8 @@ namespace Wither.CustomRpc
             GameData.Instance.GetPlayerById(data.PlayerID)._object.Revive();
             Utils.Coroutines.colors.TryGetValue(GameData.Instance.GetPlayerById(data.PlayerID)._object,
                 out Color32 color);
-            GameData.Instance.GetPlayerById(data.PlayerID)._object.myRend.color = color;
+            if (new Color32().Equals(color))
+                GameData.Instance.GetPlayerById(data.PlayerID)._object.myRend.color = color;
         }
     }
 }

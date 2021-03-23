@@ -8,9 +8,9 @@ namespace Wither.Buttons
 {
     public class ReviveButton : Button
     {
-        public ReviveButton(Vector2 _offset, float cooldown) : base(_offset, "ReviveImage", cooldown) { }
+        public ReviveButton(Vector2 _offset, float cooldown) : base(_offset, Utils.StringNames.ReviveImage, cooldown) { }
 
-        private static int Lives = CustomGameOptions.CrewLives;
+        private static int Lives = CustomGameOptions.GameOptions.CrewLives;
         
         protected override void OnClick()
         {

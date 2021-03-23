@@ -5,7 +5,7 @@ namespace Wither.Buttons
 {
     public class TransformButton : Button
     {
-        public TransformButton(Vector2 _offset, float cooldown) : base(_offset, "TransformImage", cooldown) { }
+        public TransformButton(Vector2 _offset, float cooldown) : base(_offset, Utils.StringNames.TransformImage, cooldown) { }
         
         public static bool isTransformed = false;
 

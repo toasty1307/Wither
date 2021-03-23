@@ -1,12 +1,12 @@
 ManifestFileVersion: 0
-CRC: 1123663353
+CRC: 1936525676
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: a8399ac36eae451df81ee1fa7495608b
+    Hash: 7064ba28d78574e8f057d93b5791b133
   TypeTreeHash:
     serializedVersion: 2
-    Hash: d3d86affed237c846f387b8116ada2b2
+    Hash: 6d1787020128aad62b9353820df57242
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -18,6 +18,10 @@ ClassTypes:
 - Class: 28
   Script: {instanceID: 0}
 - Class: 48
+  Script: {instanceID: 0}
+- Class: 58
+  Script: {instanceID: 0}
+- Class: 61
   Script: {instanceID: 0}
 - Class: 68
   Script: {instanceID: 0}
@@ -33,7 +37,8 @@ ClassTypes:
   Script: {instanceID: 0}
 Assets:
 - Assets/Wither/prefabs/WitherSkull.prefab
-- Assets/stuff/Standard Assets/ParticleSystems/Prefabs/Explosion.prefab
+- Assets/Wither/prefabs/Explosion.prefab
+- Assets/Wither/prefabs/Crack.prefab
 - Assets/Wither/prefabs/WitherRose.prefab
 - Assets/Wither/prefabs/Bedrock.prefab
 Dependencies: []

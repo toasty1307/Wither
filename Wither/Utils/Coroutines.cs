@@ -13,7 +13,7 @@ namespace Wither.Utils
         {
             Reactor.Coroutines.Start(TakeDamage(target));
             currentlyWithered.Add(target);
-            yield return new WaitForSeconds(CustomGameOptions.WitherDeathTime);
+            yield return new WaitForSeconds(CustomGameOptions.GameOptions.WitherDeathTime);
             if (!target.Data.IsDead) source.RpcMurderPlayer(target);
             currentlyWithered.Remove(target);
             Rpc<InstantiateRoseRpc>.Instance.Send(new InstantiateRoseRpc.Data(target.transform.position));
@@ -26,7 +26,8 @@ namespace Wither.Utils
             while (!target.Data.IsDead)
             {
                 var original = target.myRend.color;
-                colors.Add(target, original);
+                try { colors.Add(target, original); }
+                catch { /* ignored */ }
                 target.myRend.color = Color.red;
                 yield return new WaitForSeconds(0.5f);
                 target.myRend.color = original;
