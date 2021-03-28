@@ -8,14 +8,13 @@
         <Authors>toasty marshmallow</Authors>
         <GameVersion>2021.3.5s</GameVersion>
         <DefineConstants>$(DefineConstants);STEAM</DefineConstants>
+        <LangVersion>preview</LangVersion>
     </PropertyGroup>
     
     <ItemGroup>
         <Deobfuscate Include="$(AmongUs)\BepInEx\plugins\Reactor-$(GameVersion).dll" />
 
         <PackageReference Include="Reactor.OxygenFilter.MSBuild" Version="0.2.9" />
-
-        <PackageReference Include="System.Runtime.Numerics" Version="4.3.0" />
     </ItemGroup>
     
     <ItemGroup>

@@ -1,12 +1,12 @@
-﻿using UnityEngine;
+﻿using Reactor.Extensions;
+using UnityEngine;
+using Wither.CustomGameOptions;
 using Wither.Utils;
 
 namespace Wither.Buttons
 {
     public class TransformButton : Button
-    {
-        public TransformButton(Vector2 _offset, float cooldown) : base(_offset, Utils.StringNames.TransformImage, cooldown) { }
-        
+    {        
         public static bool isTransformed = false;
 
         protected override void OnClick()
@@ -14,9 +14,16 @@ namespace Wither.Buttons
             isTransformed = true;
         }
 
-        protected override bool CanUse()
+        protected override void SetVars()
         {
-            return base.CanUse() && PlayerControl.LocalPlayer.Data.IsImpostor;
+            edgeAlignment = AspectPosition.EdgeAlignments.LeftBottom;
+            offset = Vector2.zero;
+            maxTimer = GameOptions.TransformCooldown;
+            sprite = AssetBundleLoader.ButtonTextureBundle.LoadAsset<Sprite>(Utils.StringNames.TransformImage);
         }
+
+        protected override bool CouldUse() => PlayerControl.LocalPlayer.Data.IsImpostor && !PlayerControl.LocalPlayer.Data.IsDead;
+
+        protected override bool CanUse() => !isTransformed;
     }
 }

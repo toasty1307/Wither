@@ -9,37 +9,17 @@ using Wither.Utils;
 namespace Wither.CustomRpc
 {
     [RegisterCustomRpc]
-    public class InstantiateRoseRpc : PlayerCustomRpc<Main, InstantiateRoseRpc.Data>
+    public class InstantiateRoseRpc : PlayerCustomRpc<WitherPlugin, Vector2>
     {
-        public InstantiateRoseRpc(Main plugin) : base(plugin) { }
-
-        public readonly struct Data
-        {
-            public readonly Vector2 Position;
-            
-            public Data(Vector2 position)
-            {
-                Position = position;
-            }
-        }
-
+        public InstantiateRoseRpc(WitherPlugin plugin) : base(plugin) { }
         public override RpcLocalHandling LocalHandling => RpcLocalHandling.After;
-
-        public override void Write(MessageWriter writer, Data data)
-        {
-            writer.Write(data.Position);
-        }
-
-        public override Data Read(MessageReader reader)
-        {
-            return new Data(reader.ReadVector2());
-        }
-
-        public override void Handle(PlayerControl innerNetObject, Data data)
+        public override void Write(MessageWriter writer, Vector2 data) => writer.Write(data);
+        public override Vector2 Read(MessageReader reader) => reader.ReadVector2();
+        public override void Handle(PlayerControl innerNetObject, Vector2 data)
         {
             GameObject rose = AssetBundleLoader.PrefabBundle.LoadAsset<GameObject>(Utils.StringNames.WitherRose);
             GameObject instantiate = Object.Instantiate(rose, ShipStatus.Instance.transform);
-            instantiate.transform.position = data.Position;
+            instantiate.transform.position = data;
             instantiate.AddComponent<WitherRose>();
         }
     }

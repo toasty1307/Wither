@@ -115,7 +115,6 @@ namespace Wither.Patches
 	        {
 		        cam.Locked = false;
 	        }
-	        yield break;
         }
     }
 }

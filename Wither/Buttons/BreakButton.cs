@@ -1,6 +1,7 @@
 ﻿using Reactor;
 using Reactor.Extensions;
 using UnityEngine;
+using Wither.CustomGameOptions;
 using Wither.CustomRpc;
 using Wither.MonoBehaviour;
 using Wither.Utils;
@@ -9,16 +10,26 @@ namespace Wither.Buttons
 {
     public class BreakButton : Button
     {
-        public BreakButton(Vector2 _offset, float cooldown) : base(_offset, Utils.StringNames.BreakImage, cooldown) { }
 
         protected override void OnClick()
         {
-            Rpc<InstantiateCrackRpc>.Instance.Send(new InstantiateCrackRpc.Data(PlayerControl.LocalPlayer.transform.position));
+            Rpc<InstantiateCrackRpc>.Instance.Send(PlayerControl.LocalPlayer.transform.position);
         }
+
+        protected override void SetVars()
+        {
+            edgeAlignment = AspectPosition.EdgeAlignments.LeftBottom;
+            offset = Vector2.up * 2;
+            maxTimer = GameOptions.BreakCooldown;
+            sprite = AssetBundleLoader.ButtonTextureBundle.LoadAsset<Sprite>(Utils.StringNames.BreakImage);
+        }
+
+        protected override bool CouldUse() =>
+            PlayerControl.LocalPlayer.Data.IsImpostor && TransformButton.isTransformed && !PlayerControl.LocalPlayer.Data.IsDead;
 
         protected override bool CanUse()
         {
-            return base.CanUse() && PlayerControl.LocalPlayer.Data.IsImpostor && TransformButton.isTransformed;
+            return true;
         }
 
         public static void InstantiateCrack(Vector2 position)

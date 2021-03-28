@@ -1,45 +1,22 @@
 ﻿using Hazel;
 using Reactor;
-using Reactor.Extensions;
 using UnityEngine;
-using Wither.Buttons;
 
 namespace Wither.CustomRpc
 {
     [RegisterCustomRpc]
-    public class ReviveRpc : PlayerCustomRpc<Main, ReviveRpc.Data>
+    public class ReviveRpc : PlayerCustomRpc<WitherPlugin, byte>
     {
-        public ReviveRpc(Main plugin) : base(plugin) { }
-
-        public readonly struct Data
-        {
-            public readonly byte PlayerID;
-
-            public Data(byte playerID)
-            {
-                PlayerID = playerID;
-            }
-        }
-
+        public ReviveRpc(WitherPlugin plugin) : base(plugin) { }
         public override RpcLocalHandling LocalHandling => RpcLocalHandling.After;
+        public override void Write(MessageWriter writer, byte data) => writer.Write(data);
+        public override byte Read(MessageReader reader) => reader.ReadByte();
 
-        public override void Write(MessageWriter writer, Data data)
+        public override void Handle(PlayerControl innerNetObject, byte data)
         {
-            writer.Write(data.PlayerID);
-        }
-
-        public override Data Read(MessageReader reader)
-        {
-            return new Data(reader.ReadByte());
-        }
-
-        public override void Handle(PlayerControl innerNetObject, Data data)
-        {
-            GameData.Instance.GetPlayerById(data.PlayerID)._object.Revive();
-            Utils.Coroutines.colors.TryGetValue(GameData.Instance.GetPlayerById(data.PlayerID)._object,
-                out Color32 color);
-            if (new Color32().Equals(color))
-                GameData.Instance.GetPlayerById(data.PlayerID)._object.myRend.color = color;
+            GameData.Instance.GetPlayerById(data)._object.Revive();
+            Utils.Coroutines.colors.TryGetValue(GameData.Instance.GetPlayerById(data)._object, out Color32 color);
+            if (new Color32().Equals(color)) GameData.Instance.GetPlayerById(data)._object.myRend.color = color;
         }
     }
 }

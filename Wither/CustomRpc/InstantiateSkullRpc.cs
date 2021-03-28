@@ -7,35 +7,12 @@ using Wither.Buttons;
 namespace Wither.CustomRpc
 {
     [RegisterCustomRpc]
-    public class InstantiateSkullRpc : PlayerCustomRpc<Main, InstantiateSkullRpc.Data>
+    public class InstantiateSkullRpc : PlayerCustomRpc<WitherPlugin, Vector2>
     {
-        public InstantiateSkullRpc(Main plugin) : base(plugin) { }
-
-        public readonly struct Data
-        {
-            public readonly Vector2 Position;
-            
-            public Data(Vector2 position)
-            {
-                Position = position;
-            }
-        }
-
+        public InstantiateSkullRpc(WitherPlugin plugin) : base(plugin) { }
         public override RpcLocalHandling LocalHandling => RpcLocalHandling.After;
-
-        public override void Write(MessageWriter writer, Data data)
-        {
-            writer.Write(data.Position);
-        }
-
-        public override Data Read(MessageReader reader)
-        {
-            return new Data(reader.ReadVector2());
-        }
-
-        public override void Handle(PlayerControl innerNetObject, Data data)
-        {
-            SkullButton.InstantiateSkull(data.Position);
-        }
+        public override void Write(MessageWriter writer, Vector2 data) => writer.Write(data);
+        public override Vector2 Read(MessageReader reader) => reader.ReadVector2();
+        public override void Handle(PlayerControl innerNetObject, Vector2 data) => SkullButton.InstantiateSkull(data);
     }
 }

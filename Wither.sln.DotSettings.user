@@ -3,4 +3,7 @@
 	<s:String x:Key="/Default/Environment/AssemblyExplorer/XmlDocument/@EntryValue">&lt;AssemblyExplorer&gt;&#xD;
   &lt;Assembly Path="C:\Users\sharm\AppData\Roaming\.reactor\2021.3.5s\4d20b68e7b8fad34c1548b34fdd08d76\references\Assembly-CSharp-Deobfuscated.dll" /&gt;&#xD;
   &lt;Assembly Path="C:\Users\sharm\AppData\Roaming\.reactor\2021.3.5s\4d20b68e7b8fad34c1548b34fdd08d76\mapped\Reactor-2021.3.5s.dll" /&gt;&#xD;
-&lt;/AssemblyExplorer&gt;</s:String></wpf:ResourceDictionary>
+&lt;/AssemblyExplorer&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=c9dd33c9_002De692_002D4c9f_002Dac9f_002Daee717508888/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Session" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;Nothing /&gt;&#xD;
+&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

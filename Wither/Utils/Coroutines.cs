@@ -16,7 +16,7 @@ namespace Wither.Utils
             yield return new WaitForSeconds(CustomGameOptions.GameOptions.WitherDeathTime);
             if (!target.Data.IsDead) source.RpcMurderPlayer(target);
             currentlyWithered.Remove(target);
-            Rpc<InstantiateRoseRpc>.Instance.Send(new InstantiateRoseRpc.Data(target.transform.position));
+            Rpc<InstantiateRoseRpc>.Instance.Send(target.transform.position);
         }
 
         public static Dictionary<PlayerControl, Color32> colors = new Dictionary<PlayerControl, Color32>();

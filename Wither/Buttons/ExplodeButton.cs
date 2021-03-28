@@ -1,6 +1,7 @@
 ﻿using Reactor;
 using Reactor.Extensions;
 using UnityEngine;
+using Wither.CustomGameOptions;
 using Wither.CustomRpc;
 using Wither.Utils;
 using Object = UnityEngine.Object;
@@ -9,8 +10,6 @@ namespace Wither.Buttons
 {
     public class ExplodeButton : Button
     {
-        public ExplodeButton(Vector2 _offset, float cooldown) : base(_offset, Utils.StringNames.ExplodeImage, cooldown) { }
-
         protected override void OnClick()
         {
             Collider2D[] colliders = Physics2D.OverlapCircleAll(PlayerControl.LocalPlayer.GetTruePosition(), CustomGameOptions.GameOptions.ExplosionRadius);
@@ -25,7 +24,7 @@ namespace Wither.Buttons
                     PlayerControl.LocalPlayer.RpcMurderPlayer(pc);
             }
 
-            Rpc<InstantiateExplosionRpc>.Instance.Send(new InstantiateExplosionRpc.Data(PlayerControl.LocalPlayer.transform.position));
+            Rpc<InstantiateExplosionRpc>.Instance.Send(PlayerControl.LocalPlayer.transform.position);
         }
 
         public static void InstantiateExplosion(Vector2 position)
@@ -35,9 +34,20 @@ namespace Wither.Buttons
             Object.Destroy(instantiate, 5f);
         }
 
+        protected override void SetVars()
+        {
+            edgeAlignment = AspectPosition.EdgeAlignments.LeftBottom;
+            offset = Vector2.one * 2;
+            maxTimer = GameOptions.ExplodeCooldown;
+            sprite = AssetBundleLoader.ButtonTextureBundle.LoadAsset<Sprite>(Utils.StringNames.ExplodeImage);
+        }
+
+        protected override bool CouldUse() =>
+            PlayerControl.LocalPlayer.Data.IsImpostor && TransformButton.isTransformed && !PlayerControl.LocalPlayer.Data.IsDead;
+
         protected override bool CanUse()
         {
-            return base.CanUse() && PlayerControl.LocalPlayer.Data.IsImpostor && TransformButton.isTransformed;
+            return true;
         }
     }
 }

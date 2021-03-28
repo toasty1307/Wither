@@ -8,6 +8,7 @@
         public const string SkullImage = "SkullImage";
         public const string BreakImage = "BreakImage";
         public const string ExplodeImage = "ExplodeImage";
+        public const string MilkImage = "MilkImage";
         public const string Crack = "Crack";
         public const string Bedrock = "Bedrock";
         public const string Explosion = "Explosion";

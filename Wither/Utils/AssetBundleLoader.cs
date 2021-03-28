@@ -13,7 +13,7 @@ namespace Wither.Utils
         
         public static void LoadBundles()
         {
-            Assembly executingAssembly = Assembly.GetExecutingAssembly();
+            Assembly executingAssembly = typeof(WitherPlugin).Assembly;
             Stream stream;
             
             

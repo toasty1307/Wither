@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
 using HarmonyLib;
 using UnityEngine;
 using Wither.Buttons;
@@ -12,30 +12,18 @@ namespace Wither.Patches
     {
         public static void Postfix()
         {
-            GameObject.Destroy(ButtonCreatorPatch.transformButton.button.KillButtonManager.gameObject);
-            GameObject.Destroy(ButtonCreatorPatch.explodeButton.button.KillButtonManager.gameObject);
-            GameObject.Destroy(ButtonCreatorPatch.skullButton.button.KillButtonManager.gameObject);
-            GameObject.Destroy(ButtonCreatorPatch.bedrockButton.button.KillButtonManager.gameObject);
-            GameObject.Destroy(ButtonCreatorPatch.breakButton.button.KillButtonManager.gameObject);
-            GameObject.Destroy(ButtonCreatorPatch.reviveButton.button.KillButtonManager.gameObject);
-            ButtonCreatorPatch.transformButton = null;
-            ButtonCreatorPatch.explodeButton = null;
-            ButtonCreatorPatch.skullButton = null;
-            ButtonCreatorPatch.bedrockButton = null;
-            ButtonCreatorPatch.breakButton = null;
-            ButtonCreatorPatch.reviveButton = null;
-            AssetBundleLoader.ButtonTextureBundle.Unload(true);
-            AssetBundleLoader.PrefabBundle.Unload(true);
             TransformButton.isTransformed = false;
-            BedrockButton.bedrocks = new List<GameObject>();
-            foreach (var witherRose in Object.FindObjectsOfType<WitherRose>())
-            {
-                Object.Destroy(witherRose.gameObject);
-            }
-            foreach (var witherSkull in Object.FindObjectsOfType<WitherSkull>())
-            {
-                Object.Destroy(witherSkull.gameObject);
-            }
+            BedrockButton.bedrocks.ForEach(Object.Destroy);
+            BedrockButton.bedrocks.Clear();
+            Button.allButtons.ToArray().ToList().ForEach(x => x.Dispose());
+            Object.FindObjectsOfType<WitherRose>().ToList().ForEach(x => Object.Destroy(x.gameObject));
+            Object.FindObjectsOfType<WitherSkull>().ToList().ForEach(x => Object.Destroy(x.gameObject));
         }
+    }
+    
+    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.OnDestroy))]
+    public static class EndGamePatch2
+    {
+        public static void Postfix() => EndGamePatch.Postfix();
     }
 }

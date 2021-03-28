@@ -1,5 +1,4 @@
 ﻿using HarmonyLib;
-using UnityEngine;
 using Wither.Buttons;
 
 namespace Wither.Patches
@@ -13,15 +12,17 @@ namespace Wither.Patches
         public static ExplodeButton explodeButton;
         public static BreakButton breakButton;
         public static BedrockButton bedrockButton;
+        public static MilkButton milkButton;
 
         public static void Postfix()
         {
-            transformButton = new TransformButton(Vector2.one * 0.125f, CustomGameOptions.GameOptions.TransformCooldown);
-            reviveButton = new ReviveButton(Vector2.one * 0.125f, CustomGameOptions.GameOptions.ReviveCooldown);
-            skullButton = new SkullButton(Vector2.one * 1.250f, CustomGameOptions.GameOptions.SkullCooldown);
-            explodeButton = new ExplodeButton(Vector2.right * 0.125f + Vector2.up * 1.250f, CustomGameOptions.GameOptions.ExplodeCooldown);
-            breakButton = new BreakButton(Vector2.right * 1.250f + Vector2.up * 0.125f, CustomGameOptions.GameOptions.BreakCooldown);
-            bedrockButton = new BedrockButton(Vector2.one * 0.125f, CustomGameOptions.GameOptions.BedrockCooldown);
+            bedrockButton = new BedrockButton();
+            transformButton = new TransformButton();
+            reviveButton = new ReviveButton();
+            skullButton = new SkullButton();
+            breakButton = new BreakButton();
+            explodeButton = new ExplodeButton();
+            milkButton = new MilkButton();
         }
     }
 }

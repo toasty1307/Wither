@@ -19,8 +19,6 @@ namespace Wither.MonoBehaviour
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            Main.Logger.LogInfo("TRIGGER ROSE!!!");
-
             var pc = other.gameObject.GetComponent<PlayerControl>();
             if (pc == null || pc == wither || pc.Data.IsDead) return;
             if (Utils.Coroutines.currentlyWithered.Contains(pc)) return;
