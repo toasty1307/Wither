@@ -8,16 +8,18 @@ using Wither.Utils;
 
 namespace Wither.Buttons
 {
+    [CustomButton]
     public class BedrockButton : Button
     {
         public static List<GameObject> bedrocks = new List<GameObject>();
         
-        protected override void SetVars()
+        public BedrockButton()
         {
             edgeAlignment = AspectPosition.EdgeAlignments.LeftBottom;
             offset = Vector2.zero;
             maxTimer = GameOptions.BedrockCooldown;
             sprite = AssetBundleLoader.ButtonTextureBundle.LoadAsset<Sprite>(Utils.StringNames.BedrockImage);
+            Initialize();
         }
 
         protected override bool CouldUse() => !PlayerControl.LocalPlayer.Data.IsImpostor && !PlayerControl.LocalPlayer.Data.IsDead;
@@ -26,18 +28,11 @@ namespace Wither.Buttons
 
         protected override void OnClick()
         {
-            WitherPlugin.Logger.LogInfo("ONCLICK STARING RPC");
-
             Rpc<InstantiateBedrockRpc>.Instance.Send(PlayerControl.LocalPlayer.transform.position);
-            
-            WitherPlugin.Logger.LogInfo("ONCLICK ENDING RPC");
-
         }
         
         public static void InstantiateBedrock(Vector2 position)
         {
-            WitherPlugin.Logger.LogInfo("ONCLICK INSTANTIATE BEDROCK");
-
             GameObject bedrock = AssetBundleLoader.PrefabBundle.LoadAsset<GameObject>(Utils.StringNames.Bedrock);
             GameObject bedrockInstantiated = Object.Instantiate(bedrock, ShipStatus.Instance.transform);
             bedrockInstantiated.transform.localScale /= 3;

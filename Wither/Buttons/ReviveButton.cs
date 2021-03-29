@@ -17,14 +17,14 @@ namespace Wither.Buttons
             Lives--;
         }
 
-        protected override void SetVars()
+        public ReviveButton()
         {
             edgeAlignment = AspectPosition.EdgeAlignments.LeftBottom;
             offset = Vector2.zero;
             maxTimer = GameOptions.ReviveCooldown;
             sprite = AssetBundleLoader.ButtonTextureBundle.LoadAsset<Sprite>(Utils.StringNames.ReviveImage);
+            Initialize();
         }
-
         protected override bool CouldUse()
         {
             return !PlayerControl.LocalPlayer.Data.IsImpostor && PlayerControl.LocalPlayer.Data.IsDead && Lives > 0;

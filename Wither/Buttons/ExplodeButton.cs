@@ -1,4 +1,5 @@
-﻿using Reactor;
+﻿using System.Runtime.CompilerServices;
+using Reactor;
 using Reactor.Extensions;
 using UnityEngine;
 using Wither.CustomGameOptions;
@@ -34,14 +35,14 @@ namespace Wither.Buttons
             Object.Destroy(instantiate, 5f);
         }
 
-        protected override void SetVars()
+        public ExplodeButton()
         {
             edgeAlignment = AspectPosition.EdgeAlignments.LeftBottom;
             offset = Vector2.one * 2;
             maxTimer = GameOptions.ExplodeCooldown;
             sprite = AssetBundleLoader.ButtonTextureBundle.LoadAsset<Sprite>(Utils.StringNames.ExplodeImage);
+            Initialize();
         }
-
         protected override bool CouldUse() =>
             PlayerControl.LocalPlayer.Data.IsImpostor && TransformButton.isTransformed && !PlayerControl.LocalPlayer.Data.IsDead;
 

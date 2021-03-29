@@ -25,12 +25,13 @@ namespace Wither.Buttons
             instantiate.AddComponent<WitherSkull>();
         }
 
-        protected override void SetVars()
+        public SkullButton()
         {
             edgeAlignment = AspectPosition.EdgeAlignments.LeftBottom;
             offset = Vector2.right * 2;
             maxTimer = GameOptions.SkullCooldown;
             sprite = AssetBundleLoader.ButtonTextureBundle.LoadAsset<Sprite>(Utils.StringNames.SkullImage);
+            Initialize();
         }
 
         protected override bool CouldUse() =>

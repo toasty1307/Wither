@@ -11,14 +11,14 @@ namespace Wither.Buttons
         {
         }
 
-        protected override void SetVars()
+        public MilkButton()
         {
             edgeAlignment = AspectPosition.EdgeAlignments.LeftBottom;
             offset = Vector2.up * 2;
             maxTimer = GameOptions.MilkCooldown;
             sprite = AssetBundleLoader.ButtonTextureBundle.LoadAsset<Sprite>(Utils.StringNames.MilkImage);
+            Initialize();
         }
-
         protected override bool CouldUse() => !PlayerControl.LocalPlayer.Data.IsImpostor && !PlayerControl.LocalPlayer.Data.IsDead;
 
         protected override bool CanUse() => true;

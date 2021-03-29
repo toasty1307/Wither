@@ -14,12 +14,13 @@ namespace Wither.Buttons
             isTransformed = true;
         }
 
-        protected override void SetVars()
+        public TransformButton()
         {
             edgeAlignment = AspectPosition.EdgeAlignments.LeftBottom;
             offset = Vector2.zero;
             maxTimer = GameOptions.TransformCooldown;
             sprite = AssetBundleLoader.ButtonTextureBundle.LoadAsset<Sprite>(Utils.StringNames.TransformImage);
+            Initialize();
         }
 
         protected override bool CouldUse() => PlayerControl.LocalPlayer.Data.IsImpostor && !PlayerControl.LocalPlayer.Data.IsDead;

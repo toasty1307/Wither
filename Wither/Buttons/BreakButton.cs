@@ -16,12 +16,13 @@ namespace Wither.Buttons
             Rpc<InstantiateCrackRpc>.Instance.Send(PlayerControl.LocalPlayer.transform.position);
         }
 
-        protected override void SetVars()
+        public BreakButton()
         {
             edgeAlignment = AspectPosition.EdgeAlignments.LeftBottom;
             offset = Vector2.up * 2;
             maxTimer = GameOptions.BreakCooldown;
             sprite = AssetBundleLoader.ButtonTextureBundle.LoadAsset<Sprite>(Utils.StringNames.BreakImage);
+            Initialize();
         }
 
         protected override bool CouldUse() =>

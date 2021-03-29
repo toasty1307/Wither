@@ -15,15 +15,8 @@ namespace Wither.Patches
             TransformButton.isTransformed = false;
             BedrockButton.bedrocks.ForEach(Object.Destroy);
             BedrockButton.bedrocks.Clear();
-            Button.allButtons.ToArray().ToList().ForEach(x => x.Dispose());
             Object.FindObjectsOfType<WitherRose>().ToList().ForEach(x => Object.Destroy(x.gameObject));
             Object.FindObjectsOfType<WitherSkull>().ToList().ForEach(x => Object.Destroy(x.gameObject));
         }
-    }
-    
-    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.OnDestroy))]
-    public static class EndGamePatch2
-    {
-        public static void Postfix() => EndGamePatch.Postfix();
     }
 }

@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using HarmonyLib;
 using InnerNet;
 using UnityEngine;
 using UnityEngine.Events;
 using Object = UnityEngine.Object;
 
-namespace Wither.Utils
+namespace Wither.Buttons
 {
     public abstract class Button : IDisposable
     {
@@ -19,17 +20,16 @@ namespace Wither.Utils
         protected SpriteRenderer spriteRenderer;
         protected TextRenderer timerText;
         protected PassiveButton button;
+        public static Button Instance;
         protected Vector2 offset;
         protected Sprite sprite;
         protected float timer;
         protected float maxTimer;
         protected bool isCoolingDown;
         protected bool commonCanUse;
-        
 
-        public Button()
+        protected void Initialize()
         {
-            SetVars();
             gameObject = Object.Instantiate(HudManager.Instance.KillButton.gameObject, HudManager.Instance.transform);
             gameObject.SetActive(true);
             killButtonManager = gameObject.GetComponent<KillButtonManager>();
@@ -91,7 +91,6 @@ namespace Wither.Utils
 	        timerText.gameObject.SetActive(false);
         }
         
-        protected abstract void SetVars();
         protected abstract bool CouldUse();
         protected abstract bool CanUse();
         protected abstract void OnClick();
@@ -101,11 +100,41 @@ namespace Wither.Utils
             allButtons.Remove(this);
             Object.Destroy(gameObject);
         }
-
-        [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
-        public static class HudUpdate
+    }
+    
+            
+    [AttributeUsage(AttributeTargets.Class)]
+    public class CustomButton : Attribute
+    {
+        public static void CreateButtons()
         {
-            public static void Postfix() => Update();
+            Assembly assembly = typeof(WitherPlugin).Assembly;
+            foreach (var type in assembly.GetTypes())
+            {
+                if (type.GetCustomAttribute(typeof(CustomButton)) == null || !type.IsSubclassOf(typeof(Button))) continue;
+                type.GetConstructor(new Type[0])?.Invoke(new object[0]);
+            }
         }
+    }
+}
+
+namespace Wither.Buttons.Patches
+{
+    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
+    public static class HudUpdate
+    {
+        public static void Postfix() => Button.Update();
+    }
+
+    [HarmonyPatch(typeof(HudManager), nameof(HudManager.Start))]
+    public static class CreateButtonsPatch
+    {
+        public static void Postfix() => CustomButton.CreateButtons();
+    }
+        
+    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.OnDestroy))]
+    public static class DestroyPatch
+    {
+        public static void Postfix() => Button.allButtons.ForEach(x => x.Dispose());
     }
 }
