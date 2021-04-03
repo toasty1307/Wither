@@ -2,7 +2,7 @@
 using Reactor;
 using Reactor.Extensions;
 using UnityEngine;
-using Wither.Buttons;
+using Wither.Components.Buttons;
 using Wither.MonoBehaviour;
 using Wither.Utils;
 

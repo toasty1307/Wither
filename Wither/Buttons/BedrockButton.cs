@@ -6,21 +6,12 @@ using Wither.CustomGameOptions;
 using Wither.CustomRpc;
 using Wither.Utils;
 
-namespace Wither.Buttons
+namespace Wither.Components.Buttons
 {
     [CustomButton]
     public class BedrockButton : Button
     {
         public static List<GameObject> bedrocks = new List<GameObject>();
-        
-        public BedrockButton()
-        {
-            edgeAlignment = AspectPosition.EdgeAlignments.LeftBottom;
-            offset = Vector2.zero;
-            maxTimer = GameOptions.BedrockCooldown;
-            sprite = AssetBundleLoader.ButtonTextureBundle.LoadAsset<Sprite>(Utils.StringNames.BedrockImage);
-            Initialize();
-        }
 
         protected override bool CouldUse() => !PlayerControl.LocalPlayer.Data.IsImpostor && !PlayerControl.LocalPlayer.Data.IsDead;
 
@@ -30,7 +21,15 @@ namespace Wither.Buttons
         {
             Rpc<InstantiateBedrockRpc>.Instance.Send(PlayerControl.LocalPlayer.transform.position);
         }
-        
+
+        protected override void Init()
+        {
+            edgeAlignment = AspectPosition.EdgeAlignments.LeftBottom;
+            offset = Vector2.zero;
+            maxTimer = GameOptions.BedrockCooldown;
+            sprite = AssetBundleLoader.ButtonTextureBundle.LoadAsset<Sprite>(Utils.StringNames.BedrockImage);
+        }
+
         public static void InstantiateBedrock(Vector2 position)
         {
             GameObject bedrock = AssetBundleLoader.PrefabBundle.LoadAsset<GameObject>(Utils.StringNames.Bedrock);

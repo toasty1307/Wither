@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using HarmonyLib;
 using UnityEngine;
-using Wither.Buttons;
+using Wither.Components.Buttons;
 using Wither.CustomGameOptions;
 
 namespace Wither.Patches

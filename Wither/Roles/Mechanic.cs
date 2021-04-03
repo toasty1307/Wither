@@ -1,4 +1,4 @@
-﻿namespace Wither.Roles
+﻿namespace Wither.Components.Roles
 {
     [CustomRole]
     public class Mechanic : Role

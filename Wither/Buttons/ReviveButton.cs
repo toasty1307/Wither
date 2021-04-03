@@ -5,8 +5,9 @@ using Wither.CustomGameOptions;
 using Wither.CustomRpc;
 using Wither.Utils;
 
-namespace Wither.Buttons
+namespace Wither.Components.Buttons
 {
+    [CustomButton]
     public class ReviveButton : Button
     {
         private static int Lives = CustomGameOptions.GameOptions.CrewLives;
@@ -17,14 +18,14 @@ namespace Wither.Buttons
             Lives--;
         }
 
-        public ReviveButton()
+        protected override void Init()
         {
             edgeAlignment = AspectPosition.EdgeAlignments.LeftBottom;
             offset = Vector2.zero;
             maxTimer = GameOptions.ReviveCooldown;
             sprite = AssetBundleLoader.ButtonTextureBundle.LoadAsset<Sprite>(Utils.StringNames.ReviveImage);
-            Initialize();
         }
+
         protected override bool CouldUse()
         {
             return !PlayerControl.LocalPlayer.Data.IsImpostor && PlayerControl.LocalPlayer.Data.IsDead && Lives > 0;

@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Linq;
+using System.Runtime.CompilerServices;
 using Reactor;
 using Reactor.Extensions;
 using UnityEngine;
@@ -7,16 +8,15 @@ using Wither.CustomRpc;
 using Wither.Utils;
 using Object = UnityEngine.Object;
 
-namespace Wither.Buttons
+namespace Wither.Components.Buttons
 {
+    [CustomButton]
     public class ExplodeButton : Button
     {
         protected override void OnClick()
         {
-            Collider2D[] colliders = Physics2D.OverlapCircleAll(PlayerControl.LocalPlayer.GetTruePosition(), CustomGameOptions.GameOptions.ExplosionRadius);
-            foreach (var collider2D in colliders)
+            foreach (var pc in PlayerControl.AllPlayerControls.ToArray().ToList().Where(x => !x.Data.Disconnected && !x.Data.IsDead))
             {
-                PlayerControl pc = collider2D.gameObject.GetComponent<PlayerControl>();
                 if (pc == null) continue;
                 Vector2 vector = pc.GetTruePosition() - PlayerControl.LocalPlayer.GetTruePosition();
                 float magnitude = vector.magnitude;
@@ -28,6 +28,14 @@ namespace Wither.Buttons
             Rpc<InstantiateExplosionRpc>.Instance.Send(PlayerControl.LocalPlayer.transform.position);
         }
 
+        protected override void Init()
+        {
+            edgeAlignment = AspectPosition.EdgeAlignments.LeftBottom;
+            offset = Vector2.one * 2;
+            maxTimer = GameOptions.ExplodeCooldown;
+            sprite = AssetBundleLoader.ButtonTextureBundle.LoadAsset<Sprite>(Utils.StringNames.ExplodeImage);
+        }
+
         public static void InstantiateExplosion(Vector2 position)
         {
             GameObject effect = AssetBundleLoader.PrefabBundle.LoadAsset<GameObject>(Utils.StringNames.Explosion);
@@ -35,14 +43,6 @@ namespace Wither.Buttons
             Object.Destroy(instantiate, 5f);
         }
 
-        public ExplodeButton()
-        {
-            edgeAlignment = AspectPosition.EdgeAlignments.LeftBottom;
-            offset = Vector2.one * 2;
-            maxTimer = GameOptions.ExplodeCooldown;
-            sprite = AssetBundleLoader.ButtonTextureBundle.LoadAsset<Sprite>(Utils.StringNames.ExplodeImage);
-            Initialize();
-        }
         protected override bool CouldUse() =>
             PlayerControl.LocalPlayer.Data.IsImpostor && TransformButton.isTransformed && !PlayerControl.LocalPlayer.Data.IsDead;
 

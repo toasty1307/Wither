@@ -2,7 +2,7 @@
 using System.Reflection;
 using HarmonyLib;
 
-namespace Wither.Roles
+namespace Wither.Components.Roles
 {
     public class Role
     {

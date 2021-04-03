@@ -7,13 +7,22 @@ using Wither.CustomRpc;
 using Wither.MonoBehaviour;
 using Wither.Utils;
 
-namespace Wither.Buttons
+namespace Wither.Components.Buttons
 {
+    [CustomButton]
     public class SkullButton : Button
     {
         protected override void OnClick()
         {
             Rpc<InstantiateSkullRpc>.Instance.Send(PlayerControl.LocalPlayer.transform.position);
+        }
+
+        protected override void Init()
+        {
+            edgeAlignment = AspectPosition.EdgeAlignments.LeftBottom;
+            offset = Vector2.right * 2;
+            maxTimer = GameOptions.SkullCooldown;
+            sprite = AssetBundleLoader.ButtonTextureBundle.LoadAsset<Sprite>(Utils.StringNames.SkullImage);
         }
 
         public static void InstantiateSkull(Vector2 position)
@@ -23,15 +32,6 @@ namespace Wither.Buttons
             instantiate.transform.position = position;
             instantiate.transform.localScale /= 2;
             instantiate.AddComponent<WitherSkull>();
-        }
-
-        public SkullButton()
-        {
-            edgeAlignment = AspectPosition.EdgeAlignments.LeftBottom;
-            offset = Vector2.right * 2;
-            maxTimer = GameOptions.SkullCooldown;
-            sprite = AssetBundleLoader.ButtonTextureBundle.LoadAsset<Sprite>(Utils.StringNames.SkullImage);
-            Initialize();
         }
 
         protected override bool CouldUse() =>

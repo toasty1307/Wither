@@ -6,8 +6,9 @@ using Wither.CustomRpc;
 using Wither.MonoBehaviour;
 using Wither.Utils;
 
-namespace Wither.Buttons
+namespace Wither.Components.Buttons
 {
+    [CustomButton]
     public class BreakButton : Button
     {
 
@@ -16,13 +17,13 @@ namespace Wither.Buttons
             Rpc<InstantiateCrackRpc>.Instance.Send(PlayerControl.LocalPlayer.transform.position);
         }
 
-        public BreakButton()
+        protected override void Init()
         {
             edgeAlignment = AspectPosition.EdgeAlignments.LeftBottom;
             offset = Vector2.up * 2;
             maxTimer = GameOptions.BreakCooldown;
             sprite = AssetBundleLoader.ButtonTextureBundle.LoadAsset<Sprite>(Utils.StringNames.BreakImage);
-            Initialize();
+
         }
 
         protected override bool CouldUse() =>

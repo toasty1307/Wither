@@ -15,8 +15,6 @@ namespace Wither.CustomRpc
         public override void Handle(PlayerControl innerNetObject, byte data)
         {
             GameData.Instance.GetPlayerById(data)._object.Revive();
-            Utils.Coroutines.colors.TryGetValue(GameData.Instance.GetPlayerById(data)._object, out Color32 color);
-            if (new Color32().Equals(color)) GameData.Instance.GetPlayerById(data)._object.myRend.color = color;
         }
     }
 }
