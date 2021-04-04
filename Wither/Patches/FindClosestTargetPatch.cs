@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using System;
+using HarmonyLib;
 using UnityEngine;
 
 namespace Wither.Patches
@@ -18,7 +19,7 @@ namespace Wither.Patches
             Il2CppSystem.Collections.Generic.List<GameData.PlayerInfo> allPlayers = GameData.Instance.AllPlayers;
             for (int i = 0; i < allPlayers.Count; i++)
             {
-                GameData.PlayerInfo playerInfo = allPlayers[i];
+                GameData.PlayerInfo playerInfo = allPlayers[(Index) i].Cast<GameData.PlayerInfo>();
                 if (!playerInfo.Disconnected && playerInfo.PlayerId != __instance.PlayerId && !playerInfo.IsDead && !playerInfo.IsImpostor)
                 {
                     PlayerControl @object = playerInfo.Object;

@@ -66,7 +66,7 @@ namespace Wither.Patches
 				{
 					for (int i = 0; i < target.myTasks.Count; i++)
 					{
-						PlayerTask playerTask = target.myTasks[i];
+						PlayerTask playerTask = (PlayerTask) target.myTasks[(Index) i];
 						playerTask.OnRemove();
 						UnityEngine.Object.Destroy(playerTask.gameObject);
 					}

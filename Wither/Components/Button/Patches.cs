@@ -5,7 +5,7 @@ namespace Wither.Components.Buttons
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
     public static class HudUpdate
     {
-        public static void Postfix() => Button.Update();
+        public static void Postfix() => Button.SUpdate();
     }
 
     [HarmonyPatch(typeof(HudManager), nameof(HudManager.Start))]

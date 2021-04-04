@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Reactor;
+using Reactor.Networking;
 using UnityEngine;
 using Wither.CustomRpc;
 
@@ -18,16 +19,12 @@ namespace Wither.Utils
             currentlyWithered.Remove(target);
             Rpc<InstantiateRoseRpc>.Instance.Send(target.transform.position);
         }
-
-        public static Dictionary<PlayerControl, Color32> colors = new Dictionary<PlayerControl, Color32>();
         
         public static IEnumerator TakeDamage(PlayerControl target)
         {
             while (!target.Data.IsDead)
             {
                 var original = target.myRend.color;
-                try { colors.Add(target, original); }
-                catch { /* ignored */ }
                 target.myRend.color = Color.red;
                 yield return new WaitForSeconds(0.5f);
                 target.myRend.color = original;

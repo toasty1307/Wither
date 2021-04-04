@@ -27,9 +27,11 @@ namespace Wither.Components.Buttons
         protected bool commonCanUse;
         protected bool hasLimitedUse = false;
         protected float maxUses = 0;
-        protected float currentUses = 0;
+        protected float currentUses;
+        private static readonly int Desat = Shader.PropertyToID("_Desat");
+        private static readonly int Percent = Shader.PropertyToID("_Percent");
 
-        public Button()
+        protected Button()
         {
             Initialize();
             Init();
@@ -61,11 +63,12 @@ namespace Wither.Components.Buttons
             currentUses = maxUses;
         }
 
-        public static void Update()
+        public static void SUpdate()
         {
             foreach (var button in allButtons)
             {
-                button.ButtonUpdate();
+                try { button.ButtonUpdate(); }
+                catch { /* WitherPlugin.Logger.LogInfo("EXCEPTION UPDATING A BUTTON");*/ }
             }
         }
 
@@ -80,46 +83,46 @@ namespace Wither.Components.Buttons
             aspectPosition.AdjustPosition();
             if (!CanUse())
             {
-                spriteRenderer.color = Palette.DisabledColor;
-                spriteRenderer.material.SetFloat("_Desat", 1f);
+                spriteRenderer.color = Palette.DisabledClear;
+                spriteRenderer.material.SetFloat(Desat, 1f);
                 return;
             }
             spriteRenderer.color = Palette.EnabledColor;
-            spriteRenderer.material.SetFloat("_Desat", 0f);
+            spriteRenderer.material.SetFloat(Desat, 0f);
             if (!hasLimitedUse) return;
             if (currentUses > 0)
             {
                 spriteRenderer.color = Palette.EnabledColor;
-                spriteRenderer.material.SetFloat("_Desat", 0f);
+                spriteRenderer.material.SetFloat(Desat, 0f);
                 return;
             }
-            spriteRenderer.color = Palette.DisabledColor;
-            spriteRenderer.material.SetFloat("_Desat", 1f);
+            spriteRenderer.color = Palette.DisabledClear;
+            spriteRenderer.material.SetFloat(Desat, 1f);
         }
 
         protected void OnClickListener()
         { 
-            if (!gameObject.active) return;
-            if (!CanUse() || isCoolingDown) return;
-            SetCoolDown(timer = maxTimer, maxTimer);
+            if (!gameObject.active || !CanUse() || isCoolingDown) return;
             if (hasLimitedUse)
             {
                 if (!(currentUses > 0)) return;
-                CanUse();
                 currentUses--;
+                SetCoolDown(timer = maxTimer, maxTimer);
+                OnClick();
                 return;
             }
+            SetCoolDown(timer = maxTimer, maxTimer);
             OnClick();
         }
         
-        public void SetCoolDown(float timer, float maxTimer)
+        public void SetCoolDown(float _timer, float _maxTimer)
         {
-	        float num = Mathf.Clamp01(timer / maxTimer);
-            spriteRenderer.material.SetFloat("_Percent", num);
-	        isCoolingDown = (num > 0f);
+	        float num = Mathf.Clamp01(_timer / _maxTimer);
+            spriteRenderer.material.SetFloat(Percent, num);
+	        isCoolingDown = num > 0f;
 	        if (isCoolingDown)
 	        {
-		        timerText.Text = Mathf.CeilToInt(timer).ToString();
+		        timerText.Text = Mathf.CeilToInt(_timer).ToString();
 		        timerText.gameObject.SetActive(true);
 		        return;
 	        }
@@ -130,6 +133,7 @@ namespace Wither.Components.Buttons
         protected abstract bool CanUse();
         protected abstract void OnClick();
         protected abstract void Init();
+        protected virtual void Update() { }
         
         public void Dispose()
         {
