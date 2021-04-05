@@ -1,8 +1,10 @@
-﻿using BepInEx;
+﻿using System;
+using BepInEx;
 using BepInEx.IL2CPP;
 using BepInEx.Logging;
 using HarmonyLib;
 using Reactor;
+using UnityEngine.SceneManagement;
 using Wither.Utils;
 
 namespace Wither
@@ -15,17 +17,13 @@ namespace Wither
         public const string Id = "me.toasty_marshmallow.Wither";
 
         public Harmony Harmony { get; } = new Harmony(Id);
-
-        public static WitherPlugin Instance;
         
         public static ManualLogSource Logger { get; private set; }
         
         public override void Load()
         {
             Logger = Log;
-
-            Instance = this;
-
+            
             RegisterCustomRpcAttribute.Register(this);
 
             RegisterInIl2CppAttribute.Register();
@@ -33,6 +31,12 @@ namespace Wither
             Harmony.PatchAll();
             
             AssetBundleLoader.LoadBundles();
+            
+            SceneManager.add_sceneLoaded((Action<Scene, LoadSceneMode>) ((s, _) =>
+            {
+                if (s.buildIndex == 0)
+                    SceneManager.LoadScene(1);
+            }));
         }
     }
 }
