@@ -5,6 +5,7 @@ using BepInEx.Logging;
 using HarmonyLib;
 using Reactor;
 using UnityEngine.SceneManagement;
+using Wither.Components.Buttons;
 using Wither.Utils;
 
 namespace Wither

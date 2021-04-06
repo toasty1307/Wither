@@ -9,7 +9,6 @@ using Wither.Utils;
 
 namespace Wither.Components.Buttons
 {
-    [CustomButton]
     public class BedrockButton : Button
     {
         public static List<GameObject> bedrocks = new List<GameObject>();
@@ -26,7 +25,7 @@ namespace Wither.Components.Buttons
         protected override void Init()
         {
             edgeAlignment = AspectPosition.EdgeAlignments.LeftBottom;
-            offset = Vector2.zero;
+            offset = new Vector2(0.6169749f, 0.5863363f);
             maxTimer = GameOptions.BedrockCooldown;
             sprite = AssetBundleLoader.ButtonTextureBundle.LoadAsset<Sprite>(Utils.StringNames.BedrockImage);
         }

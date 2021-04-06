@@ -10,7 +10,6 @@ using Wither.Utils;
 
 namespace Wither.Components.Buttons
 {
-    [CustomButton]
     public class SkullButton : Button
     {
         protected override void OnClick()
@@ -21,7 +20,7 @@ namespace Wither.Components.Buttons
         protected override void Init()
         {
             edgeAlignment = AspectPosition.EdgeAlignments.LeftBottom;
-            offset = Vector2.right * 2;
+            offset = new Vector2(1.716975f, 0.5863363f);
             maxTimer = GameOptions.SkullCooldown;
             sprite = AssetBundleLoader.ButtonTextureBundle.LoadAsset<Sprite>(Utils.StringNames.SkullImage);
         }

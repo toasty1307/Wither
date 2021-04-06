@@ -1,17 +1,19 @@
-﻿using Reactor;
+﻿using System.Collections.Generic;
+using Reactor;
 using Reactor.Extensions;
 using Reactor.Networking;
+using UnhollowerBaseLib;
 using UnityEngine;
 using Wither.CustomGameOptions;
 using Wither.CustomRpc;
 using Wither.Utils;
+using Random = System.Random;
 
 namespace Wither.Components.Buttons
 {
-    [CustomButton]
     public class ReviveButton : Button
     {
-        private static int Lives = CustomGameOptions.GameOptions.CrewLives;
+        private static int Lives = GameOptions.CrewLives;
 
         protected override void OnClick()
         {
@@ -22,7 +24,7 @@ namespace Wither.Components.Buttons
         protected override void Init()
         {
             edgeAlignment = AspectPosition.EdgeAlignments.LeftBottom;
-            offset = Vector2.zero;
+            offset = new Vector2(0.6169749f, 1.5863363f);
             maxTimer = GameOptions.ReviveCooldown;
             sprite = AssetBundleLoader.ButtonTextureBundle.LoadAsset<Sprite>(Utils.StringNames.ReviveImage);
         }

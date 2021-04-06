@@ -9,7 +9,6 @@ using Wither.Utils;
 
 namespace Wither.Components.Buttons
 {
-    [CustomButton]
     public class BreakButton : Button
     {
 
@@ -21,7 +20,7 @@ namespace Wither.Components.Buttons
         protected override void Init()
         {
             edgeAlignment = AspectPosition.EdgeAlignments.LeftBottom;
-            offset = Vector2.up * 2;
+            offset = new Vector2(0.6169749f, 1.686336f);
             maxTimer = GameOptions.BreakCooldown;
             sprite = AssetBundleLoader.ButtonTextureBundle.LoadAsset<Sprite>(Utils.StringNames.BreakImage);
 

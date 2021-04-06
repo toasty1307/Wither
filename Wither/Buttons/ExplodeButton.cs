@@ -11,7 +11,6 @@ using Object = UnityEngine.Object;
 
 namespace Wither.Components.Buttons
 {
-    [CustomButton]
     public class ExplodeButton : Button
     {
         protected override void OnClick()
@@ -32,7 +31,7 @@ namespace Wither.Components.Buttons
         protected override void Init()
         {
             edgeAlignment = AspectPosition.EdgeAlignments.LeftBottom;
-            offset = Vector2.one * 2;
+            offset = new Vector2(1.716975f, 1.686336f);
             maxTimer = GameOptions.ExplodeCooldown;
             sprite = AssetBundleLoader.ButtonTextureBundle.LoadAsset<Sprite>(Utils.StringNames.ExplodeImage);
         }

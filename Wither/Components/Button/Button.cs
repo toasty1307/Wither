@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Reflection;
 using BepInEx.Configuration;
 using InnerNet;
 using Reactor;
-using Reactor.Extensions;
 using UnityEngine;
 using UnityEngine.Events;
 using Object = UnityEngine.Object;
@@ -60,8 +58,7 @@ namespace Wither.Components.Buttons
             button.OnClick.AddListener((UnityAction)OnClickListener);
             aspectPosition.updateAlways = true;
             allButtons.Add(this);
-            offsetConfig =
-                PluginSingleton<WitherPlugin>.Instance.Config.Bind("Button Positions", allButtons.IndexOf(this) + "B", "-1 -1");
+            offsetConfig = PluginSingleton<WitherPlugin>.Instance.Config.Bind("Button Positions", allButtons.IndexOf(this) + "B", "-1 -1");
         }
 
         protected void InitializePart2()
@@ -70,19 +67,16 @@ namespace Wither.Components.Buttons
             aspectPosition.Alignment = edgeAlignment;
             spriteRenderer.sprite = sprite;
             currentUses = maxUses;
-            WitherPlugin.Logger.LogInfo(offsetConfig.Value);
             if (offsetConfig.Value == "-1 -1" || overrideOffset)
             {
-                WitherPlugin.Logger.LogInfo("Changing");
                 offsetConfig.Value = $"{offset.x} {offset.y}";
                 offsetConfig.BoxedValue = offsetConfig.Value;
-                aspectPosition.DistanceFromEdge = (spriteRenderer.size / 2) + offset;
+                aspectPosition.DistanceFromEdge = offset;
                 return;
             }
 
             float num1 = Convert.ToSingle(offsetConfig.Value.Substring(0, offsetConfig.Value.IndexOf(" ", StringComparison.Ordinal)));
             float num2 = Convert.ToSingle(offsetConfig.Value.Substring(offsetConfig.Value.IndexOf(" ", StringComparison.Ordinal)));
-            WitherPlugin.Logger.LogInfo($"Pos: {num1}, {num2}");
             offset = new Vector2(num1, num2);
             aspectPosition.DistanceFromEdge = offset;
         }
@@ -247,22 +241,6 @@ namespace Wither.Components.Buttons
         {
             allButtons.Remove(this);
             Object.Destroy(gameObject);
-        }
-    }
-    
-            
-    [AttributeUsage(AttributeTargets.Class)]
-    public class CustomButton : Attribute
-    {
-        public static void CreateButtons()
-        {
-            Button.taskCompleteOverlayTextRenderer = HudManager.Instance.TaskCompleteOverlay.GetComponent<TextRenderer>();
-            Assembly assembly = typeof(WitherPlugin).Assembly;
-            foreach (var type in assembly.GetTypes())
-            {
-                if (type.GetCustomAttribute(typeof(CustomButton)) == null || !type.IsSubclassOf(typeof(Button))) continue;
-                type.GetConstructor(new Type[0])?.Invoke(new object[0]);
-            }
         }
     }
 }

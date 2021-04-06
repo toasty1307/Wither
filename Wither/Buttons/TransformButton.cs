@@ -5,7 +5,6 @@ using Wither.Utils;
 
 namespace Wither.Components.Buttons
 {
-    [CustomButton]
     public class TransformButton : Button
     {        
         public static bool isTransformed = false;
@@ -18,7 +17,7 @@ namespace Wither.Components.Buttons
         protected override void Init()
         {
             edgeAlignment = AspectPosition.EdgeAlignments.LeftBottom;
-            offset = Vector2.zero;
+            offset = new Vector2(0.6169749f, 0.5863363f);
             maxTimer = GameOptions.TransformCooldown;
             sprite = AssetBundleLoader.ButtonTextureBundle.LoadAsset<Sprite>(Utils.StringNames.TransformImage);
         }
