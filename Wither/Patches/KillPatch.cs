@@ -80,13 +80,13 @@ namespace Wither.Patches
 				}
 				target.myTasks.Insert(0, importantTextTask);
 			}
-			Coroutines.Start(CoPerformKill(__instance, target, __instance.KillAnimations.Random<KillAnimation>()));
+			Coroutines.Start(CoPerformKill(__instance, target, __instance.KillAnimations.Random()));
 			return false;
 	    }
 
         public static IEnumerator CoPerformKill(PlayerControl source, PlayerControl target, KillAnimation animation)
         {
-	        FollowerCamera cam = Camera.main.GetComponent<FollowerCamera>();
+	        FollowerCamera cam = Camera.main!.GetComponent<FollowerCamera>();
 	        bool isParticipant = PlayerControl.LocalPlayer == source || PlayerControl.LocalPlayer == target;
 	        PlayerPhysics sourcePhys = source.MyPhysics;
 	        KillAnimation.SetMovement(source, false);

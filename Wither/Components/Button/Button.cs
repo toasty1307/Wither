@@ -13,6 +13,7 @@ namespace Wither.Components.Buttons
     public abstract class Button : IDisposable
     {
         public static List<Button> allButtons = new List<Button>();
+        private static List<Button> buttonButNot = new List<Button>();
 
         protected GameObject gameObject;
         protected KillButtonManager killButtonManager;
@@ -32,12 +33,17 @@ namespace Wither.Components.Buttons
         protected float maxUses = 0;
         protected float currentUses;
         protected bool overrideOffset = false;
-        protected bool isSelectedForEdit = false;
+        protected bool isSelectedForEdit;
         private static readonly int Desat = Shader.PropertyToID("_Desat");
         private static readonly int Percent = Shader.PropertyToID("_Percent");
         private static bool inEditMode;
 
         protected Button()
+        {
+            buttonButNot.Add(this);
+        }
+
+        protected void ButtonCool()
         {
             Initialize();
             Init();
@@ -80,9 +86,9 @@ namespace Wither.Components.Buttons
             offset = new Vector2(num1, num2);
             aspectPosition.DistanceFromEdge = offset;
         }
+        
 
         public static TextRenderer taskCompleteOverlayTextRenderer;
-
         public static void SUpdate()
         {
             if (Input.GetKeyDown(KeyCode.F12))
@@ -108,7 +114,7 @@ namespace Wither.Components.Buttons
             PlayerControl.LocalPlayer.MyPhysics.body.constraints = inEditMode ? RigidbodyConstraints2D.FreezeAll : RigidbodyConstraints2D.FreezeRotation;
             
             taskCompleteOverlayTextRenderer.Text = inEditMode ? "In Edit Mode, Press F12 To Exit" : "Task Completed!";
-
+            
             foreach (var button in allButtons)
             {
                 if (inEditMode)
@@ -136,7 +142,7 @@ namespace Wither.Components.Buttons
 
             if (Input.GetMouseButtonDown(0))
             {
-                Vector3 cursorPosition = Camera.main.ScreenToWorldPoint(mousePos);
+                Vector3 cursorPosition = Camera.main!.ScreenToWorldPoint(mousePos);
                 cursorPosition.z = gameObject.transform.position.z;
                 if (collider.bounds.Contains(cursorPosition))
                 {
@@ -156,7 +162,7 @@ namespace Wither.Components.Buttons
             if (!isSelectedForEdit) return;
 
             mousePos = new Vector2(Mathf.Clamp(mousePos.x, 0, Screen.width), Mathf.Clamp(mousePos.y, 0, Screen.height));
-            Vector3 pos = Camera.main.ScreenToWorldPoint(mousePos);
+            Vector3 pos = Camera.main!.ScreenToWorldPoint(mousePos);
             pos.z = gameObject.transform.position.z;
             pos = new Vector3((float) Math.Round(pos.x, 1), (float) Math.Round(pos.y, 1), pos.z);
             pos = HudManager.Instance.transform.InverseTransformPoint(pos);
@@ -169,7 +175,7 @@ namespace Wither.Components.Buttons
 
         private void ButtonUpdate()
         {
-            gameObject.SetActive(CouldUse() && CommonCanUse());
+            gameObject.SetActive(CouldUse() && CommonCanUse);
             if (!gameObject.active) return;
             if (PlayerControl.LocalPlayer.CanMove)
                 timer -= Time.deltaTime;
@@ -210,12 +216,10 @@ namespace Wither.Components.Buttons
             OnClick();
         }
 
-        private static bool CommonCanUse()
-        {
-            return (AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Started ||
-                    AmongUsClient.Instance.GameMode == GameModes.FreePlay) && 
-                   PlayerControl.LocalPlayer && ShipStatus.Instance && !MeetingHud.Instance;
-        }
+        private static bool CommonCanUse =>
+            (AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Started ||
+             AmongUsClient.Instance.GameMode == GameModes.FreePlay) &&
+            PlayerControl.LocalPlayer && ShipStatus.Instance && !MeetingHud.Instance;
 
         public void SetCoolDown(float _timer)
         {
@@ -230,6 +234,14 @@ namespace Wither.Components.Buttons
 	        }
 	        timerText.gameObject.SetActive(false);
         }
+
+        public static void MakeButtonsAgain()
+        {
+            foreach (var button in buttonButNot)
+            {
+                button.ButtonCool();
+            }
+        }
         
         protected abstract bool CouldUse();
         protected abstract bool CanUse();
@@ -241,6 +253,16 @@ namespace Wither.Components.Buttons
         {
             allButtons.Remove(this);
             Object.Destroy(gameObject);
+        }
+
+        public static void CreateButtons()
+        {
+            Assembly assembly = typeof(WitherPlugin).Assembly;
+            foreach (var type in assembly.GetTypes())
+            {
+                if (!type.IsSubclassOf(typeof(Button))) continue;
+                type.GetConstructor(new Type[0])?.Invoke(new object[0]);
+            }
         }
     }
 }

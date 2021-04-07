@@ -7,6 +7,7 @@
         InstantiateExplosion,
         InstantiateRose,
         InstantiateSkull,
-        Revive
+        Revive,
+        SyncRoles
     }
 }
