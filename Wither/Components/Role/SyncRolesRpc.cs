@@ -6,7 +6,7 @@ using Reactor.Networking;
 namespace Wither.Components.Roles
 {
     [RegisterCustomRpc((uint) CustomRpc.CustomRpc.SyncRoles)]
-    public class SyncRolesRpc : PlayerCustomRpc<WitherPlugin, byte[]>
+    public class SyncRolesRpc : PlayerCustomRpc<WitherPlugin , byte[]>
     {
         public SyncRolesRpc(WitherPlugin plugin, uint id) : base(plugin, id) { }
 

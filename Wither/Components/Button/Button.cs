@@ -64,7 +64,7 @@ namespace Wither.Components.Buttons
             button.OnClick.AddListener((UnityAction)OnClickListener);
             aspectPosition.updateAlways = true;
             allButtons.Add(this);
-            offsetConfig = PluginSingleton<WitherPlugin>.Instance.Config.Bind("Button Positions", allButtons.IndexOf(this) + "B", "-1 -1");
+            offsetConfig = WitherPlugin.Instance.Config.Bind("Button Positions", allButtons.IndexOf(this) + "B", "-1 -1");
         }
 
         protected void InitializePart2()

@@ -7,6 +7,7 @@ using Reactor;
 using UnityEngine.SceneManagement;
 using Wither.Components.Buttons;
 using Wither.Components.Roles;
+using Wither.CustomGameOptions;
 using Wither.Utils;
 
 namespace Wither
@@ -21,9 +22,13 @@ namespace Wither
         public Harmony Harmony { get; } = new Harmony(Id);
         
         public static ManualLogSource Logger { get; private set; }
+
+        public static WitherPlugin Instance;
         
         public override void Load()
         {
+            Instance = this;
+            
             Logger = Log;
             
             RegisterCustomRpcAttribute.Register(this);
@@ -42,6 +47,8 @@ namespace Wither
             Button.CreateButtons();
             
             Role.CreateRoles();
+            
+            GameOptions.CreateOptions();
         }
     }
 }

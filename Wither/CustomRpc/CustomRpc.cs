@@ -8,6 +8,7 @@
         InstantiateRose,
         InstantiateSkull,
         Revive,
-        SyncRoles
+        SyncRoles,
+        SyncSettings
     }
 }

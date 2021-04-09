@@ -109,7 +109,15 @@ namespace Wither.Components.Roles
         {
             var instance = __instance.__this;
             Role role = PlayerControl.LocalPlayer.GetRole();
-            if (role == null) return __instance;
+            if (role == null)
+            {
+                bool imp = PlayerControl.LocalPlayer.Data.IsImpostor;
+                instance.Title.Text = imp ? "Impostor" : "Crewmate";
+                instance.Title.Color = imp ? Palette.ImpostorRed : Palette.CrewmateBlue;
+                instance.ImpostorText.gameObject.SetActive(imp);
+                instance.BackgroundBar.material.color = imp ? Palette.ImpostorRed : Palette.CrewmateBlue;
+                return __instance;
+            }
             instance.Title.Text = role.Name;
             instance.Title.Color = role.Color;
             instance.ImpostorText.Text = role.Description;
@@ -121,7 +129,6 @@ namespace Wither.Components.Roles
 
         public static bool ComputeTasks()
         {
-            WitherPlugin.Logger.LogInfo("tasks?");
             GameData.Instance.TotalTasks = 0;
             GameData.Instance.CompletedTasks = 0;
             for (int i = 0; i < GameData.Instance.AllPlayers.Count; i++)
@@ -141,15 +148,12 @@ namespace Wither.Components.Roles
                     !playerInfo.IsImpostor &&
                     flag)
                 {
-                    WitherPlugin.Logger.LogInfo($"{playerInfo._playerName}: tru");
                     for (int j = 0; j < playerInfo.Tasks.Count; j++)
                     {
                         GameData.Instance.TotalTasks++;
-                        WitherPlugin.Logger.LogInfo($"total tasks: {GameData.Instance.TotalTasks}");
                         if (playerInfo.Tasks[(Index) j].Cast<GameData.TaskInfo>().Complete)
                         {
                             GameData.Instance.CompletedTasks++;
-                            WitherPlugin.Logger.LogInfo($"total tasks: {GameData.Instance.CompletedTasks}");
                         }
                     }
                 }
@@ -163,7 +167,19 @@ namespace Wither.Components.Roles
             team.Clear();
             team.Add(PlayerControl.LocalPlayer);
             Role role = PlayerControl.LocalPlayer.GetRole();
-            if (role == null || !role.ShowTeam) return team;
+            if (role == null || !role.ShowTeam)
+            {
+                foreach (var player in GameData.Instance.AllPlayers.ToArray().Where(x => !x.Disconnected))
+                {
+                    if (PlayerControl.LocalPlayer.Data.IsImpostor)
+                    {
+                        if (player.IsImpostor && player._object != PlayerControl.LocalPlayer) team.Add(player._object);
+                        continue;
+                    }
+                    if (player._object != PlayerControl.LocalPlayer) team.Add(player._object);
+                }
+                return team;
+            }
             foreach (var playerControl in role.players.Where(playerControl => playerControl != PlayerControl.LocalPlayer && !team.Contains(playerControl)))
             {
                 team.Add(playerControl);

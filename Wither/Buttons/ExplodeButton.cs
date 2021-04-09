@@ -19,9 +19,8 @@ namespace Wither.Components.Buttons
             {
                 if (pc == null) continue;
                 Vector2 vector = pc.GetTruePosition() - PlayerControl.LocalPlayer.GetTruePosition();
-                float magnitude = vector.magnitude;
                 if (pc != PlayerControl.LocalPlayer && !pc.Data.IsDead
-                    && !PhysicsHelpers.AnyNonTriggersBetween(PlayerControl.LocalPlayer.GetTruePosition(), vector.normalized, magnitude, Constants.ShipAndObjectsMask))
+                    && !PhysicsHelpers.AnyNonTriggersBetween(PlayerControl.LocalPlayer.GetTruePosition(), vector.normalized, GameOptions.ExplosionRadius, Constants.ShipAndObjectsMask))
                     PlayerControl.LocalPlayer.RpcMurderPlayer(pc);
             }
 
