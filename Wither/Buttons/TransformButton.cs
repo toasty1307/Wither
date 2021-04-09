@@ -1,4 +1,8 @@
-﻿using Reactor.Extensions;
+﻿using System.Collections.Generic;
+using System.Reflection;
+using HarmonyLib;
+using Il2CppSystem.Collections;
+using Reactor.Extensions;
 using UnityEngine;
 using Wither.CustomGameOptions;
 using Wither.Utils;
@@ -25,5 +29,20 @@ namespace Wither.Components.Buttons
         protected override bool CouldUse() => PlayerControl.LocalPlayer.Data.IsImpostor && !PlayerControl.LocalPlayer.Data.IsDead;
 
         protected override bool CanUse() => !isTransformed;
+    }
+
+    [HarmonyPatch]
+    public static class Patches
+    {
+        public static IEnumerable<MethodBase> TargetMethods()
+        {
+            yield return AccessTools.Method(typeof(PlayerControl), nameof(PlayerControl.OnDestroy));
+            yield return AccessTools.Method(typeof(MeetingHud), nameof(MeetingHud.Close));
+        }
+
+        public static void Postfix()
+        {
+            TransformButton.isTransformed = false;
+        }
     }
 }

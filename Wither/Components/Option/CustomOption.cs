@@ -85,6 +85,23 @@ namespace Wither.Components.Option
         {
             foreach (var customOption in Options)
             {
+                switch (customOption)
+                {
+                    case CustomToggleOption toggleOption:
+                        toggleOption.RaiseOnValueChanged(toggleOption.Value);
+                        continue;
+                    case CustomStringOption stringOption:
+                        stringOption.RaiseOnValueChanged(stringOption.ByteValue);
+                        continue;
+                    case CustomNumberOption numberOption:
+                        numberOption.RaiseOnValueChanged(numberOption.Value);
+                        continue;
+                }
+            }
+            if (!AmongUsClient.Instance.AmHost || !PlayerControl.LocalPlayer) return;
+            
+            foreach (var customOption in Options)
+            {
                 string id = customOption.Id;
                 byte type = (byte) customOption.Type;
                 switch (customOption)
@@ -93,7 +110,7 @@ namespace Wither.Components.Option
                         Rpc<SyncSettingsRpc>.Instance.Send(new SyncSettingsRpc.Data(id, type, toggleOption.Value));
                         continue;
                     case CustomStringOption stringOption:
-                        Rpc<SyncSettingsRpc>.Instance.Send(new SyncSettingsRpc.Data(id, type, stringOption.Value));
+                        Rpc<SyncSettingsRpc>.Instance.Send(new SyncSettingsRpc.Data(id, type, stringOption.ByteValue));
                         continue;
                     case CustomNumberOption numberOption:
                         Rpc<SyncSettingsRpc>.Instance.Send(new SyncSettingsRpc.Data(id, type, numberOption.Value));
