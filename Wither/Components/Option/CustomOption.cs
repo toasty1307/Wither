@@ -97,7 +97,7 @@ namespace Wither.Components.Option
                         continue;
                     case CustomNumberOption numberOption:
                         Rpc<SyncSettingsRpc>.Instance.Send(new SyncSettingsRpc.Data(id, type, numberOption.Value));
-                        break;
+                        continue;
                 }
             }
         }
