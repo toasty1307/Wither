@@ -1,6 +1,5 @@
 ﻿using System;
 using BepInEx.Configuration;
-using Reactor.Networking;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -60,7 +59,7 @@ namespace Wither.Components.Option
                     {
                         option.Value = numberOption.Value = Mathf.Min(numberOption.Value + numberOption.Increment, numberOption.Max);
                         numberOption.OnValueChanged.Invoke(null, new OnValueChangedEventArgs(option.Value));
-                        Rpc<SyncSettingsRpc>.Instance.Send(new SyncSettingsRpc.Data(numberOption.Id, (byte) numberOption.Type, numberOption.Value));
+                        PlayerControl.LocalPlayer.RpcSyncSettings(PlayerControl.GameOptions);
                         return false;
                     }
                 }
@@ -79,7 +78,7 @@ namespace Wither.Components.Option
                     {
                         option.Value = numberOption.Value = Mathf.Max(numberOption.Value - numberOption.Increment, numberOption.Min);
                         numberOption.OnValueChanged.Invoke(null, new OnValueChangedEventArgs(option.Value));
-                        Rpc<SyncSettingsRpc>.Instance.Send(new SyncSettingsRpc.Data(numberOption.Id, (byte) numberOption.Type, numberOption.Value));
+                        PlayerControl.LocalPlayer.RpcSyncSettings(PlayerControl.GameOptions);
                         return false;
                     }
                 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Reactor.Networking;
 using UnhollowerBaseLib;
 using UnityEngine;
 
@@ -46,6 +47,7 @@ namespace Wither.Components.Option
 
         public static void Prefabs()
         {
+            if (!AmongUsClient.Instance.AmHost) return;
             NumberOptionPrefab = menu.GetComponentsInChildren<NumberOption>().Last();
             ToggleOptionPrefab = menu.GetComponentsInChildren<ToggleOption>().Last();
             StringOptionPrefab = menu.GetComponentsInChildren<StringOption>().Last();
@@ -77,6 +79,27 @@ namespace Wither.Components.Option
             if (!ShowDefaultGameOptions) return options;
             s += options;
             return s;
+        }
+
+        public static void SyncAll()
+        {
+            foreach (var customOption in Options)
+            {
+                string id = customOption.Id;
+                byte type = (byte) customOption.Type;
+                switch (customOption)
+                {
+                    case CustomToggleOption toggleOption:
+                        Rpc<SyncSettingsRpc>.Instance.Send(new SyncSettingsRpc.Data(id, type, toggleOption.Value));
+                        continue;
+                    case CustomStringOption stringOption:
+                        Rpc<SyncSettingsRpc>.Instance.Send(new SyncSettingsRpc.Data(id, type, stringOption.Value));
+                        continue;
+                    case CustomNumberOption numberOption:
+                        Rpc<SyncSettingsRpc>.Instance.Send(new SyncSettingsRpc.Data(id, type, numberOption.Value));
+                        break;
+                }
+            }
         }
 
         public virtual void CreateOption() { }

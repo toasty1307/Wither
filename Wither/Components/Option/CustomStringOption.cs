@@ -66,7 +66,7 @@ namespace Wither.Components.Option
                 customStringOption.ByteValue = (byte) option.Value;
                 WitherPlugin.Logger.LogInfo(customStringOption.ByteValue);
                 customStringOption.OnValueChanged.Invoke(customStringOption, new OnValueChangedEventArgs(customStringOption.ByteValue));
-                Rpc<SyncSettingsRpc>.Instance.Send(new SyncSettingsRpc.Data(customStringOption.Id, (byte) customStringOption.Type, customStringOption.ByteValue));
+                PlayerControl.LocalPlayer.RpcSyncSettings(PlayerControl.GameOptions);
                 return false;
             }
             return true;
@@ -80,8 +80,8 @@ namespace Wither.Components.Option
                 if (customStringOption.Data != option) continue;
                 option.Value = Mathf.Clamp(option.Value - 1, 0, option.Values.Length - 1);
                 customStringOption.ByteValue = (byte) option.Value;
-                customStringOption.OnValueChanged.Invoke(customOption, new OnValueChangedEventArgs(customStringOption.ByteValue));
-                Rpc<SyncSettingsRpc>.Instance.Send(new SyncSettingsRpc.Data(customStringOption.Id, (byte) customStringOption.Type, customStringOption.ByteValue));
+                customStringOption.OnValueChanged.Invoke(customStringOption, new OnValueChangedEventArgs(customStringOption.ByteValue));
+                PlayerControl.LocalPlayer.RpcSyncSettings(PlayerControl.GameOptions);
                 return false;
             }
             return true;

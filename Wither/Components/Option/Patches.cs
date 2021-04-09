@@ -88,4 +88,16 @@ namespace Wither.Components.Option
             return CustomStringOption.Decrease(__instance);
         }
     }
+    
+    [HarmonyPatch(typeof(PlayerControl))]
+    public static class PlayerControlPatch
+    {
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(PlayerControl.RpcSyncSettings))]
+        public static void RpcSyncSettings()
+        {
+            CustomOption.SyncAll();
+        }
+    }
+
 }

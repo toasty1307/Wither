@@ -48,7 +48,7 @@ namespace Wither.Components.Option
                     {
                         option.CheckMark.enabled = toggleOption.Value = !toggleOption.Value;
                         toggleOption.OnValueChanged.Invoke(null, new OnValueChangedEventArgs(option.CheckMark.enabled));
-                        Rpc<SyncSettingsRpc>.Instance.Send(new SyncSettingsRpc.Data(toggleOption.Id, (byte) toggleOption.Type, toggleOption.Value));
+                        PlayerControl.LocalPlayer.RpcSyncSettings(PlayerControl.GameOptions);
                         return false;
                     }
                 }
