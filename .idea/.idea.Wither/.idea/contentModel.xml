@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\dev\ReactorPlugins\Wither" t="IncludeFlat">
+      <e p="packages" t="ExcludeRecursive" />
+      <e p="Wither" t="IncludeRecursive">
+        <e p="AssetBundles" t="Include">
+          <e p="AssetBundles" t="Include" />
+          <e p="AssetBundles.manifest" t="Include" />
+          <e p="buttontextures" t="Include" />
+          <e p="buttontextures.manifest" t="Include" />
+          <e p="prefabs" t="Include" />
+          <e p="prefabs.manifest" t="Include" />
+        </e>
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="Buttons" t="Include">
+          <e p="BedrockButton.cs" t="Include" />
+          <e p="BreakButton.cs" t="Include" />
+          <e p="ExplodeButton.cs" t="Include" />
+          <e p="MilkButton.cs" t="Include" />
+          <e p="ReviveButton.cs" t="Include" />
+          <e p="SkullButton.cs" t="Include" />
+          <e p="TransformButton.cs" t="Include" />
+        </e>
+        <e p="Components" t="Include">
+          <e p="Button" t="Include">
+            <e p="Button.cs" t="Include" />
+            <e p="Patches.cs" t="Include" />
+          </e>
+          <e p="Option" t="Include">
+            <e p="CustomNumberOption.cs" t="Include" />
+            <e p="CustomOption.cs" t="Include" />
+            <e p="CustomStringOption.cs" t="Include" />
+            <e p="CustomToggleOption.cs" t="Include" />
+            <e p="Patches.cs" t="Include" />
+            <e p="SyncSettingsRpc.cs" t="Include" />
+          </e>
+          <e p="Role" t="Include">
+            <e p="Patches.cs" t="Include" />
+            <e p="Role.cs" t="Include" />
+            <e p="SyncRolesRpc.cs" t="Include" />
+          </e>
+        </e>
+        <e p="CustomGameOptions" t="Include">
+          <e p="GameOptions.cs" t="Include" />
+        </e>
+        <e p="CustomRpc" t="Include">
+          <e p="CustomRpc.cs" t="Include" />
+          <e p="InstantiateBedrockRpc.cs" t="Include" />
+          <e p="InstantiateCrackRpc.cs" t="Include" />
+          <e p="InstantiateExplosionRpc.cs" t="Include" />
+          <e p="InstantiateRoseRpc.cs" t="Include" />
+          <e p="InstantiateSkullRpc.cs" t="Include" />
+          <e p="ReviveRpc.cs" t="Include" />
+        </e>
+        <e p="MonoBehaviour" t="Include">
+          <e p="Crack.cs" t="Include" />
+          <e p="WitherRose.cs" t="Include" />
+          <e p="WitherSkull.cs" t="Include" />
+        </e>
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netstandard2.1" t="Include">
+              <e p="Wither.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="Patches" t="Include">
+          <e p="EndGameManagerPatch.cs" t="Include" />
+          <e p="PlayerControlPatch.cs" t="Include" />
+          <e p="ShipStatusPatch.cs" t="Include" />
+          <e p="VentPatch.cs" t="Include" />
+          <e p="VersionShowerPatch.cs" t="Include" />
+        </e>
+        <e p="Roles" t="Include">
+          <e p="Mechanic.cs" t="Include" />
+        </e>
+        <e p="Utils" t="Include">
+          <e p="AssetBundleLoader.cs" t="Include" />
+          <e p="Coroutines.cs" t="Include" />
+          <e p="Extentions.cs" t="Include" />
+          <e p="StringNames.cs" t="Include" />
+        </e>
+        <e p="Wither.csproj" t="IncludeRecursive" />
+        <e p="WitherPlugin.cs" t="Include" />
+      </e>
+      <e p="Wither.sln" t="IncludeFlat" />
+    </e>
+    <e p="C:\Users\sharm\AppData\Local\JetBrains\Rider2020.2\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\sharm\AppData\Local\JetBrains\Rider2020.2\resharper-host\Local\Transient\Rider\v202\SolutionCaches\_Wither.-1382615650.00" t="ExcludeRecursive" />
+    <e p="C:\Users\sharm\OneDrive\Documents\AmongUs\2021.3.31.3M\BepInEx\plugins" t="Include">
+      <e p="Reactor-2021.3.31.3s.dll" t="Include" />
+    </e>
+  </component>
+</project>

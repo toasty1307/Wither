@@ -7,10 +7,12 @@ using Wither.Utils;
 
 namespace Wither.Patches
 {
-    [HarmonyPatch(typeof(EndGameManager), nameof(EndGameManager.Start))]
-    public static class EndGamePatch
+    [HarmonyPatch(typeof(EndGameManager))]
+    public static class EndGameManagerPatch
     {
-        public static void Postfix()
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(EndGameManager.Start))]
+        public static void Start()
         {
             TransformButton.isTransformed = false;
             BedrockButton.bedrocks.ForEach(Object.Destroy);

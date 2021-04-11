@@ -6,8 +6,11 @@
         <Description>Makes the Impostor a Wither</Description>
         <Authors>toasty marshmallow</Authors>
         <GameVersion>2021.3.31.3s</GameVersion>
-        <DefineConstants>$(DefineConstants);STEAM</DefineConstants>
         <LangVersion>preview</LangVersion>
+    </PropertyGroup>
+    
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <DefineConstants>TRACE;STEAM;DEBUG;</DefineConstants>
     </PropertyGroup>
     
     <ItemGroup>

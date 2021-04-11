@@ -3,10 +3,12 @@ using HarmonyLib;
 
 namespace Wither.Patches
 {
-    [HarmonyPatch(typeof(VersionShower), nameof(VersionShower.Start))]
+    [HarmonyPatch(typeof(VersionShower))]
     public static class VersionShowerPatch
     {
-        public static void Postfix()
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(VersionShower.Start))]
+        public static void Start()
         {
             string text = Reactor.Patches.ReactorVersionShower.Text.Text;
             int modsIndex = text.IndexOf("Mods", StringComparison.Ordinal);

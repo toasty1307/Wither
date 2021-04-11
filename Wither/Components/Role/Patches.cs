@@ -1,39 +1,44 @@
-﻿using System.Linq;
-using HarmonyLib;
+﻿using HarmonyLib;
 using Il2CppSystem.Collections.Generic;
 
 namespace Wither.Components.Roles
 {
-    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcSetInfected))]
+    [HarmonyPatch(typeof(PlayerControl))]
     public static class PlayerControlSetInfPatch
     {
-        public static void Postfix() => Role.SetInfected();
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(PlayerControl.RpcSetInfected))]
+        public static void SetInfected() => Role.SetInfected();
+        
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(PlayerControl.FixedUpdate))]
+        public static void FixedUpdate() => Role.PlayerControlFixedUpdate();
     }
     
-    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
-    public static class PlayerControlFUpdatePatch
-    {
-        public static void Postfix() => Role.PlayerControlFixedUpdate();
-    }
-    
-    [HarmonyPatch(typeof(IntroCutscene._CoBegin_d__11), nameof(IntroCutscene._CoBegin_d__11.MoveNext))]
+    [HarmonyPatch(typeof(IntroCutscene._CoBegin_d__11))]
     public static class IntroCutscenePatch
     {
-        public static void Postfix(IntroCutscene._CoBegin_d__11 __instance) => __instance = Role.IntroCutscene(__instance);
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(IntroCutscene._CoBegin_d__11.MoveNext))]
+        public static void MoveNext(IntroCutscene._CoBegin_d__11 __instance) => __instance = Role.IntroCutscene(__instance);
     }
     
-    [HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.CoBegin))]
+    [HarmonyPatch(typeof(IntroCutscene))]
     public static class IntroCutsceneCoBeginPatch
     {
-        public static void Prefix([HarmonyArgument(0)] ref List<PlayerControl> team)
+        [HarmonyPrefix]
+        [HarmonyPatch(nameof(IntroCutscene.CoBegin))]
+        public static void CoBegin([HarmonyArgument(0)] ref List<PlayerControl> team)
         {
             team = Role.IntroCutsceneCoBegin(team);
         }
     }
     
-    [HarmonyPatch(typeof(GameData), nameof(GameData.RecomputeTaskCounts))]
+    [HarmonyPatch(typeof(GameData))]
     public static class ComputeTasksPatch
     {
-        public static bool Prefix() => Role.ComputeTasks();
+        [HarmonyPrefix]
+        [HarmonyPatch(nameof(GameData.RecomputeTaskCounts))]
+        public static bool RecomputeTaskCounts() => Role.ComputeTasks();
     }
 }

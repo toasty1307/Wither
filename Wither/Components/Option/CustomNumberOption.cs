@@ -33,7 +33,19 @@ namespace Wither.Components.Option
             Max = Mathf.Max(value, max);
             Format = format;
             ConfigEntry = WitherPlugin.Instance.Config.Bind("Custom Game Options", Id, Value);
-            ConfigEntry.Value = (byte) Mathf.Clamp(ConfigEntry.Value, Min, Max);
+            ConfigEntry.Value = Mathf.Clamp(ConfigEntry.Value, Min, Max);
+            Value = ConfigEntry.Value;
+            OnValueChanged += (sender, args) => { ConfigEntry.Value = (float) args.Value; Value = (float) args.Value; };
+        }
+        
+        public CustomNumberOption(string id, string name, float value, Color color, float increment = 0.25f, float min = 0.25f, float max = 10f, string format = "0.0", bool showValue = true) : base(id, name, OptionType.Number, value, color, showValue)
+        {
+            Increment = increment;
+            Min = Mathf.Min(value, min);
+            Max = Mathf.Max(value, max);
+            Format = format;
+            ConfigEntry = WitherPlugin.Instance.Config.Bind("Custom Game Options", Id, Value);
+            ConfigEntry.Value = Mathf.Clamp(ConfigEntry.Value, Min, Max);
             Value = ConfigEntry.Value;
             OnValueChanged += (sender, args) => { ConfigEntry.Value = (float) args.Value; Value = (float) args.Value; };
         }
@@ -58,7 +70,7 @@ namespace Wither.Components.Option
                     if (numberOption.Data == option)
                     {
                         option.Value = numberOption.Value = Mathf.Min(numberOption.Value + numberOption.Increment, numberOption.Max);
-                        numberOption.OnValueChanged.Invoke(null, new OnValueChangedEventArgs(option.Value));
+                        numberOption.RaiseOnValueChanged(option.Value);
                         PlayerControl.LocalPlayer.RpcSyncSettings(PlayerControl.GameOptions);
                         return false;
                     }
@@ -77,7 +89,7 @@ namespace Wither.Components.Option
                     if (numberOption.Data == option)
                     {
                         option.Value = numberOption.Value = Mathf.Max(numberOption.Value - numberOption.Increment, numberOption.Min);
-                        numberOption.OnValueChanged.Invoke(null, new OnValueChangedEventArgs(option.Value));
+                        numberOption.RaiseOnValueChanged(option.Value);
                         PlayerControl.LocalPlayer.RpcSyncSettings(PlayerControl.GameOptions);
                         return false;
                     }
@@ -89,7 +101,7 @@ namespace Wither.Components.Option
 
         public void RaiseOnValueChanged(float value)
         {
-            OnValueChanged!.Invoke(null, new OnValueChangedEventArgs(value));
+            OnValueChanged?.Invoke(null, new OnValueChangedEventArgs(value));
         }
     }
 }

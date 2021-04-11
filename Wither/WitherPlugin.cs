@@ -6,6 +6,7 @@ using HarmonyLib;
 using Reactor;
 using UnityEngine.SceneManagement;
 using Wither.Components.Buttons;
+using Wither.Components.Option;
 using Wither.Components.Roles;
 using Wither.CustomGameOptions;
 using Wither.Utils;
@@ -43,12 +44,14 @@ namespace Wither
             {
                 if (s.buildIndex == 0) SceneManager.LoadScene(1);
             }));
-
+            
             Button.CreateButtons();
             
             Role.CreateRoles();
             
-            GameOptions.CreateOptions();
+            GameOptions.CreateOptions(); 
+            
+            CustomOption.UpdateAll();
         }
     }
 }

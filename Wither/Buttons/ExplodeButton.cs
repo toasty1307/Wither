@@ -18,10 +18,10 @@ namespace Wither.Components.Buttons
             foreach (var pc in PlayerControl.AllPlayerControls.ToArray().ToList().Where(x => !x.Data.Disconnected && !x.Data.IsDead))
             {
                 if (pc == null) continue;
-                Vector2 vector = pc.GetTruePosition() - PlayerControl.LocalPlayer.GetTruePosition();
-                if (pc != PlayerControl.LocalPlayer && !pc.Data.IsDead
-                    && !PhysicsHelpers.AnyNonTriggersBetween(PlayerControl.LocalPlayer.GetTruePosition(), vector.normalized, GameOptions.ExplosionRadius, Constants.ShipAndObjectsMask))
-                    PlayerControl.LocalPlayer.RpcMurderPlayer(pc);
+                if (pc == PlayerControl.LocalPlayer) continue;
+                if (!(Vector3.Distance(pc.GetTruePosition(), PlayerControl.LocalPlayer.GetTruePosition()) <= PlayerControl.GameOptions.KillDistance * GameOptions.ExplosionRadius)) continue;
+                if (PhysicsHelpers.AnyNonTriggersBetween(PlayerControl.LocalPlayer.GetTruePosition(), pc.GetTruePosition(), PlayerControl.GameOptions.KillDistance * GameOptions.ExplosionRadius, Constants.ShipAndObjectsMask)) continue;
+                PlayerControl.LocalPlayer.RpcMurderPlayer(pc);
             }
 
             Rpc<InstantiateExplosionRpc>.Instance.Send(PlayerControl.LocalPlayer.transform.position);

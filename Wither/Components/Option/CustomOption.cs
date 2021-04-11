@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Reactor.Extensions;
 using Reactor.Networking;
 using UnhollowerBaseLib;
 using UnityEngine;
+using Wither.Utils;
 
 namespace Wither.Components.Option
 {
@@ -16,6 +18,7 @@ namespace Wither.Components.Option
         public readonly OptionType Type;
         public readonly bool ShowValue;
         public object Value;
+        public Color Color = Color.white;
         public static bool ShowDefaultGameOptions = false;
         public static GameOptionsMenu menu;
         public static NumberOption NumberOptionPrefab;
@@ -44,6 +47,17 @@ namespace Wither.Components.Option
             ShowValue = showValue;
             Options.Add(this);
         }
+        
+        public CustomOption(string id, string name, OptionType type, object value, Color color, bool showValue = true)
+        {
+            Id = id;
+            Name = name;
+            Type = type;
+            Value = value;
+            ShowValue = showValue;
+            Color = color;
+            Options.Add(this);
+        }
 
         public static void Prefabs()
         {
@@ -70,18 +84,48 @@ namespace Wither.Components.Option
         public static string ToString(string s)
         {
             string options = string.Empty;
-            foreach (var customOption in Options)
+            foreach (var customOption in Options.ToList().Where(x => x.ShowValue))
             {
-                if (customOption.ShowValue)
-                    options += customOption.Name + ": " + customOption.Value + "\n";
+                string html = customOption.Color.ToHtmlString();
+                options += $"[{html}]{customOption.Name}: {customOption.Value}[]\n";
             }
 
             if (!ShowDefaultGameOptions) return options;
-            s += options;
-            return s;
+            return s + options;
+        }
+        
+        public static void SyncAll()
+        {
+            if (!AmongUsClient.Instance.AmHost || !PlayerControl.LocalPlayer) return;
+
+            try
+            {
+                foreach (var customOption in Options)
+                {
+                    string id = customOption.Id;
+                    byte type = (byte) customOption.Type;
+                    switch (customOption)
+                    {
+                        case CustomToggleOption toggleOption:
+                            Rpc<SyncSettingsRpc>.Instance.Send(new SyncSettingsRpc.Data(id, type, toggleOption.Value));
+                            continue;
+                        case CustomStringOption stringOption:
+                            Rpc<SyncSettingsRpc>.Instance.Send(new SyncSettingsRpc.Data(id, type,
+                                stringOption.ByteValue));
+                            continue;
+                        case CustomNumberOption numberOption:
+                            Rpc<SyncSettingsRpc>.Instance.Send(new SyncSettingsRpc.Data(id, type, numberOption.Value));
+                            continue;
+                    }
+                }
+            }
+            catch
+            {
+                WitherPlugin.Logger.LogError("Error Sending Custom Game Options");
+            }
         }
 
-        public static void SyncAll()
+        public static void UpdateAll()
         {
             foreach (var customOption in Options)
             {
@@ -95,25 +139,6 @@ namespace Wither.Components.Option
                         continue;
                     case CustomNumberOption numberOption:
                         numberOption.RaiseOnValueChanged(numberOption.Value);
-                        continue;
-                }
-            }
-            if (!AmongUsClient.Instance.AmHost || !PlayerControl.LocalPlayer) return;
-            
-            foreach (var customOption in Options)
-            {
-                string id = customOption.Id;
-                byte type = (byte) customOption.Type;
-                switch (customOption)
-                {
-                    case CustomToggleOption toggleOption:
-                        Rpc<SyncSettingsRpc>.Instance.Send(new SyncSettingsRpc.Data(id, type, toggleOption.Value));
-                        continue;
-                    case CustomStringOption stringOption:
-                        Rpc<SyncSettingsRpc>.Instance.Send(new SyncSettingsRpc.Data(id, type, stringOption.ByteValue));
-                        continue;
-                    case CustomNumberOption numberOption:
-                        Rpc<SyncSettingsRpc>.Instance.Send(new SyncSettingsRpc.Data(id, type, numberOption.Value));
                         continue;
                 }
             }

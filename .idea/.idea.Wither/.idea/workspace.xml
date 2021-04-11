@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="4b0054b2-6ab2-42b6-81d3-347892da93d1" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/Wither/Utils/Extentions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Wither.sln" beforeDir="false" afterPath="$PROJECT_DIR$/Wither.sln" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Wither.sln.DotSettings.user" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Wither/Buttons/ExplodeButton.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Wither/Buttons/ExplodeButton.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Wither/Components/Button/Button.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Wither/Components/Button/Button.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Wither/Components/Button/Patches.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Wither/Components/Button/Patches.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Wither/Components/Option/CustomNumberOption.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Wither/Components/Option/CustomNumberOption.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Wither/Components/Option/CustomOption.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Wither/Components/Option/CustomOption.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Wither/Components/Option/CustomStringOption.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Wither/Components/Option/CustomStringOption.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Wither/Components/Option/CustomToggleOption.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Wither/Components/Option/CustomToggleOption.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Wither/Components/Option/Patches.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Wither/Components/Option/Patches.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Wither/Components/Role/Patches.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Wither/Components/Role/Patches.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Wither/CustomGameOptions/GameOptions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Wither/CustomGameOptions/GameOptions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Wither/MonoBehaviour/WitherRose.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Wither/MonoBehaviour/WitherRose.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Wither/MonoBehaviour/WitherSkull.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Wither/MonoBehaviour/WitherSkull.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Wither/Patches/CheckEndPatch.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Wither/Patches/ShipStatusPatch.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Wither/Patches/CrewVentPatch.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Wither/Patches/VentPatch.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Wither/Patches/EndGamePatch.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Wither/Patches/EndGameManagerPatch.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Wither/Patches/FindClosestTargetPatch.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Wither/Patches/FixedUpdatePatch.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Wither/Patches/KillPatch.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Wither/Patches/PlayerControlPatch.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Wither/Patches/VersionShowerPatch.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Wither/Patches/VersionShowerPatch.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Wither/Utils/Coroutines.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Wither/Utils/Coroutines.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Wither/Wither.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Wither/Wither.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Wither/WitherPlugin.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Wither/WitherPlugin.cs" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/533A9DC6-5D00-4FD3-8F3B-F52273F4F396/bd/f8b6f1b9/Extensions.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/02940EF6-EE02-4B80-9DDA-DA3F7B920A02/72/beb6e3a9/ColorUtility.cs" root0="SKIP_HIGHLIGHTING" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/Wither/WitherPlugin.cs" />
+        <option value="$PROJECT_DIR$/Wither/Patches/RpcSetInfected.cs" />
+        <option value="$PROJECT_DIR$/Wither/Patches/VentPatch.cs" />
+        <option value="$PROJECT_DIR$/Wither/Patches/VersionShowerPatch.cs" />
+        <option value="$PROJECT_DIR$/Wither/Patches/KillPatch.cs" />
+        <option value="$PROJECT_DIR$/Wither/Patches/FixedUpdatePatch.cs" />
+        <option value="$PROJECT_DIR$/Wither/Patches/FindClosestTargetPatch.cs" />
+        <option value="$PROJECT_DIR$/Wither/Patches/EndGamePatch.cs" />
+        <option value="$PROJECT_DIR$/Wither/Patches/CheckEndPatch.cs" />
+        <option value="$PROJECT_DIR$/Wither/Utils/Coroutines.cs" />
+        <option value="$PROJECT_DIR$/Wither/MonoBehaviour/WitherSkull.cs" />
+        <option value="$PROJECT_DIR$/Wither/MonoBehaviour/WitherRose.cs" />
+        <option value="$PROJECT_DIR$/Wither/Patches/PlayerControlPatch.cs" />
+        <option value="$PROJECT_DIR$/Wither/Patches/ShipStatusPatch.cs" />
+        <option value="$PROJECT_DIR$/Wither/Buttons/ExplodeButton.cs" />
+        <option value="$PROJECT_DIR$/Wither/Components/Option/CustomNumberOption.cs" />
+        <option value="$PROJECT_DIR$/Wither/Components/Option/CustomStringOption.cs" />
+        <option value="$PROJECT_DIR$/Wither/Components/Option/CustomToggleOption.cs" />
+        <option value="$PROJECT_DIR$/Wither/CustomGameOptions/GameOptions.cs" />
+        <option value="$PROJECT_DIR$/Wither/Utils/Extentions.cs" />
+        <option value="$PROJECT_DIR$/Wither/Components/Option/CustomOption.cs" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectId" id="1qw1fSKQyloVebeCD88J2BObflR" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="settings.editor.selected.configurable" value="SolutionBuilderGeneralOptionsPageId" />
+  </component>
+  <component name="RunManager" selected=".NET Executable.wat">
+    <configuration name="wat" type="RunExe" factoryName=".NET Executable">
+      <option name="EXE_PATH" value="$USER_HOME$/OneDrive/Documents/AmongUs/2021.3.31.3M/Among Us.exe" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="$USER_HOME$/OneDrive/Documents/AmongUs/2021.3.31.3M" />
+      <option name="PASS_PARENT_ENVS" value="1" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <option name="USE_MONO" value="0" />
+      <option name="RUNTIME_ARGUMENTS" value="" />
+      <method v="2">
+        <option name="Build Solution" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Attach to Unity Editor &amp; Play" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="UNITY_ATTACH_AND_PLAY" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+      <option name="allowRunningInParallel" value="false" />
+      <option name="listenPortForConnections" value="false" />
+      <option name="pid" />
+      <option name="selectedOptions">
+        <set />
+      </option>
+      <method v="2" />
+    </configuration>
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+      <option name="allowRunningInParallel" value="false" />
+      <option name="listenPortForConnections" value="false" />
+      <option name="pid" />
+      <option name="selectedOptions">
+        <set />
+      </option>
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue=".NET Executable.wat" />
+      <item itemvalue="Attach to Unity Editor.Attach to Unity Editor" />
+      <item itemvalue="Attach to Unity Editor.Attach to Unity Editor &amp; Play" />
+    </list>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
+  <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="414" y="175" width="1092" height="714" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1617976650658">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="414" y="175" width="1092" height="714" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1617976650658" />
+    <state x="827" y="282" key="EnvironmentVariablesDialog" timestamp="1617976643987">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="827" y="282" key="EnvironmentVariablesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1617976643987" />
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1618120627519">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1618120627519" />
+    <state width="1877" height="282" key="GridCell.Tab.0.center" timestamp="1618120627519">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="282" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1618120627519" />
+    <state width="1877" height="282" key="GridCell.Tab.0.left" timestamp="1618120627519">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="282" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1618120627519" />
+    <state width="1877" height="282" key="GridCell.Tab.0.right" timestamp="1618120627519">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="282" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1618120627519" />
+    <state x="461" y="165" key="SettingsEditor" timestamp="1618065255929">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="461" y="165" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1618065255929" />
+    <state x="638" y="253" width="644" height="534" key="find.popup" timestamp="1617984488633">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="638" y="253" width="644" height="534" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1617984488633" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1618114926422">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1618114926422" />
+  </component>
+</project>

@@ -38,8 +38,8 @@ namespace Wither.MonoBehaviour
         {
             var pc = other.gameObject.GetComponent<PlayerControl>();
             if (pc == null || pc == wither || pc.Data.IsDead) return;
-            if (Utils.Coroutines.currentlyWithered.Contains(pc)) return;
-            Coroutines.Start(Utils.Coroutines.Wither(wither, pc));
+            if (Utils.Withering.currentlyWithered.ContainsKey(pc)) return;
+            Utils.Withering.Wither(wither, pc);
             Destroy(gameObject);
         }
     }

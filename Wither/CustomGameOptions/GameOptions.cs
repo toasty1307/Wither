@@ -1,4 +1,5 @@
-﻿using Wither.Components.Option;
+﻿using UnityEngine;
+using Wither.Components.Option;
 
 namespace Wither.CustomGameOptions
 {
@@ -11,7 +12,7 @@ namespace Wither.CustomGameOptions
         public static float SkullCooldown { get; set; } = 5f;
         public static float ReviveCooldown { get; set; } = 5f;
         public static float MilkCooldown { get; set; } = 5f;
-        public static float ExplosionRadius { get; set; } = 3f;
+        public static float ExplosionRadius { get; set; } = 1f;
         public static float WitherDeathTime { get; set; } = 10f;
         public static float BedrockDestroyTime { get; set; } = 15f;
         public static float WitherSkullSpeedMultiplier { get; set; } = 0.01f;
@@ -41,13 +42,13 @@ namespace Wither.CustomGameOptions
             explosionRadius.OnValueChanged += (_, args) => Handlers.ExplosionRadius((float) args.Value);
             var bedrockDestroyTime   = new CustomNumberOption("bedrock_destroy_time",   "Bedrock Destroy Time", 250f, 10f, 100f, 250f, "0.00s");
             bedrockDestroyTime.OnValueChanged += (_, args) => Handlers.BedrockDestroyTime((float) args.Value);
-            var witherSkullSpeedMultiplier   = new CustomNumberOption("wither_skull_speed_multiplier", "Wither Skull Speed Multiplier", 0.25f, 0.25f, 0.25f, 1f, "0.00x");
+            var witherSkullSpeedMultiplier   = new CustomNumberOption("wither_skull_speed_multiplier", "Wither Skull Speed Multiplier", 0.25f, 0.25f, 0.25f, 1f, "0.0x");
             witherSkullSpeedMultiplier.OnValueChanged += (_, args) => Handlers.WitherSkullSpeedMultiplier((float) args.Value);
             var crewLives   = new CustomNumberOption("crew_lives", "Crew Lives", 3, 1, 1, 10f, "0");
             crewLives.OnValueChanged += (_, args) => Handlers.CrewLives((float) args.Value);
             var crewCanVent = new CustomToggleOption("crew_can_vent", "Crew Can Vent", true);
             crewCanVent.OnValueChanged += (_, args) => Handlers.CrewCanVent((bool) args.Value);
-            var destroyBedrock = new CustomToggleOption("destroy_bedrock", "Destroy Bedrock", true);
+            var destroyBedrock = new CustomToggleOption("destroy_bedrock", "Destroy Bedrock", true, Color.blue);
             destroyBedrock.OnValueChanged += (_, args) => Handlers.DestroyBedrock((bool) args.Value);
 
         }

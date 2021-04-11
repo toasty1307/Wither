@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using BepInEx.Configuration;
 using InnerNet;
-using Reactor;
 using UnityEngine;
 using UnityEngine.Events;
 using Object = UnityEngine.Object;
@@ -164,7 +163,7 @@ namespace Wither.Components.Buttons
             mousePos = new Vector2(Mathf.Clamp(mousePos.x, 0, Screen.width), Mathf.Clamp(mousePos.y, 0, Screen.height));
             Vector3 pos = Camera.main!.ScreenToWorldPoint(mousePos);
             pos.z = gameObject.transform.position.z;
-            pos = new Vector3((float) Math.Round(pos.x, 1), (float) Math.Round(pos.y, 1), pos.z);
+            pos = new Vector3((float) Math.Round(pos.x, 0), (float) Math.Round(pos.y, 0), pos.z);
             pos = HudManager.Instance.transform.InverseTransformPoint(pos);
             var origin = HudManager.Instance.transform.InverseTransformPoint(Camera.main.ScreenToWorldPoint(new Vector3(0f, 0f)));
             origin.z = pos.z;
@@ -175,6 +174,12 @@ namespace Wither.Components.Buttons
 
         private void ButtonUpdate()
         {
+#if DEBUG
+            if (Input.GetKeyDown(KeyCode.F11))
+            {
+                timer = 0f;
+            }
+#endif
             gameObject.SetActive(CouldUse() && CommonCanUse);
             if (!gameObject.active) return;
             if (PlayerControl.LocalPlayer.CanMove)

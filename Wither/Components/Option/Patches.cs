@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using HarmonyLib;
@@ -54,7 +53,7 @@ namespace Wither.Components.Option
         public static IEnumerable<MethodBase> TargetMethods()
         {
             var bases = new List<MethodBase>();
-            for (var index = 0; index < typeof(GameOptionsData).GetMethods().Length; index++)
+            for (int index = 0; index < typeof(GameOptionsData).GetMethods().Length; index++)
             {
                 var method = typeof(GameOptionsData).GetMethods()[index];
                 if (method.ReturnType == typeof(string) && method.GetParameters().Length == 1)
@@ -64,7 +63,6 @@ namespace Wither.Components.Option
             }
             return bases.AsEnumerable();
         }
-            
         public static void Postfix(ref string __result)
         {
             __result = CustomOption.ToString(__result);
@@ -99,5 +97,4 @@ namespace Wither.Components.Option
             CustomOption.SyncAll();
         }
     }
-
 }

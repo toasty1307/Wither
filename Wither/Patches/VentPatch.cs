@@ -3,10 +3,12 @@ using UnityEngine;
 
 namespace Wither.Patches
 {
-    [HarmonyPatch(typeof(Vent), nameof(Vent.CanUse))]
-    public static class CrewVentPatch
+    [HarmonyPatch(typeof(Vent))]
+    public static class VentPatch
     {
-        public static bool Prefix(Vent __instance, [HarmonyArgument(0)] GameData.PlayerInfo pc, [HarmonyArgument(1)] out bool canUse, [HarmonyArgument(2)] out bool couldUse, ref float __result)
+        [HarmonyPrefix]
+        [HarmonyPatch(nameof(Vent.CanUse))]
+        public static bool CanUse(Vent __instance, [HarmonyArgument(0)] GameData.PlayerInfo pc, [HarmonyArgument(1)] out bool canUse, [HarmonyArgument(2)] out bool couldUse, ref float __result)
         {
             float num = float.MaxValue;
             PlayerControl @object = pc.Object;
