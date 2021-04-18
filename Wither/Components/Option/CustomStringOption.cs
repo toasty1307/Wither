@@ -37,7 +37,7 @@ namespace Wither.Components.Option
         {
             Values = values.ToList();
             ByteValue = (byte) value;
-            ConfigEntry = WitherPlugin.Instance.Config.Bind("Custom Game Options", Id, ByteValue);
+            ConfigEntry = PluginSingleton<WitherPlugin>.Instance.Config.Bind("Custom Game Options", Id, ByteValue);
             ConfigEntry.Value = (byte) Mathf.Clamp(ConfigEntry.Value, 0, Values.Count - 1);
             ByteValue = ConfigEntry.Value;
             OnValueChanged += (sender, args) => { ConfigEntry.Value = (byte) args.Value; ByteValue = ConfigEntry.Value; };
@@ -47,7 +47,7 @@ namespace Wither.Components.Option
         {
             Values = values.ToList();
             ByteValue = (byte) value;
-            ConfigEntry = WitherPlugin.Instance.Config.Bind("Custom Game Options", Id, ByteValue);
+            ConfigEntry = PluginSingleton<WitherPlugin>.Instance.Config.Bind("Custom Game Options", Id, ByteValue);
             ConfigEntry.Value = (byte) Mathf.Clamp(ConfigEntry.Value, 0, Values.Count - 1);
             ByteValue = ConfigEntry.Value;
             OnValueChanged += (sender, args) => { ConfigEntry.Value = (byte) args.Value; ByteValue = ConfigEntry.Value; };
@@ -56,7 +56,7 @@ namespace Wither.Components.Option
         public override void CreateOption()
         {
             Data = Object.Instantiate(StringOptionPrefab.gameObject, menu.transform).GetComponent<StringOption>();
-            Data.TitleText.Text = Name; 
+            Data.TitleText.text = Name; 
             Data.Values = new Il2CppStructArray<StringNames>(Values.Count);
             Data.Value = ByteValue;
             for (int i = 0; i < Values.Count; i++)

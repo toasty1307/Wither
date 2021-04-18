@@ -1,7 +1,7 @@
 ﻿using HarmonyLib;
 using Il2CppSystem.Collections.Generic;
 
-namespace Wither.Components.Roles
+namespace Wither.Components.Role
 {
     [HarmonyPatch(typeof(PlayerControl))]
     public static class PlayerControlSetInfPatch
@@ -15,12 +15,12 @@ namespace Wither.Components.Roles
         public static void FixedUpdate() => Role.PlayerControlFixedUpdate();
     }
     
-    [HarmonyPatch(typeof(IntroCutscene._CoBegin_d__11))]
+    [HarmonyPatch(typeof(IntroCutscene.Nested_0))]
     public static class IntroCutscenePatch
     {
         [HarmonyPostfix]
-        [HarmonyPatch(nameof(IntroCutscene._CoBegin_d__11.MoveNext))]
-        public static void MoveNext(IntroCutscene._CoBegin_d__11 __instance) => __instance = Role.IntroCutscene(__instance);
+        [HarmonyPatch(nameof(IntroCutscene.Nested_0.MoveNext))]
+        public static void MoveNext(IntroCutscene.Nested_0 __instance) => __instance = Role.IntroCutscene(__instance);
     }
     
     [HarmonyPatch(typeof(IntroCutscene))]
@@ -40,5 +40,13 @@ namespace Wither.Components.Roles
         [HarmonyPrefix]
         [HarmonyPatch(nameof(GameData.RecomputeTaskCounts))]
         public static bool RecomputeTaskCounts() => Role.ComputeTasks();
+    }
+    
+    [HarmonyPatch(typeof(ExileController))]
+    public static class ExileControllerPatch
+    {
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(ExileController), nameof(ExileController.Begin))]
+        public static void Begin(ExileController __instance, [HarmonyArgument(0)] GameData.PlayerInfo player, [HarmonyArgument(1)] bool tie) => Role.ExileBegin(__instance, player);
     }
 }

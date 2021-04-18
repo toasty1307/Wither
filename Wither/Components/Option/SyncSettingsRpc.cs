@@ -24,8 +24,8 @@ namespace Wither.Components.Option
 
         public SyncSettingsRpc(WitherPlugin plugin, uint id) : base(plugin, id) { }
 
-        public override RpcLocalHandling LocalHandling { get; } = RpcLocalHandling.None;
-        
+        public override RpcLocalHandling LocalHandling => RpcLocalHandling.None;
+
         public override void Write(MessageWriter writer, Data data)
         {
             writer.Write(data.Id);
@@ -39,6 +39,9 @@ namespace Wither.Components.Option
                     writer.Write((bool) data.Value);
                     return;
                 case OptionType.String:
+                    writer.Write((byte) data.Value);
+                    break;
+                case OptionType.Dropdown:
                     writer.Write((byte) data.Value);
                     break;
                 default:
@@ -55,6 +58,7 @@ namespace Wither.Components.Option
                 OptionType.Number => reader.ReadSingle(),
                 OptionType.Toggle => reader.ReadBoolean(),
                 OptionType.String => reader.ReadByte(),
+                OptionType.Dropdown => reader.ReadByte(),
                 _ => throw new ArgumentException("bruh")
             };
 
@@ -77,6 +81,9 @@ namespace Wither.Components.Option
                             return;
                         case CustomToggleOption toggleOption:
                             toggleOption.RaiseOnValueChanged((bool) data.Value);
+                            return;
+                        case CustomDropdownOption dropdownOption:
+                            dropdownOption.RaiseOnValueChanged((byte) data.Value);
                             return;
                     }
                 }

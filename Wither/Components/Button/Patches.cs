@@ -1,7 +1,10 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using HarmonyLib;
+using Reactor;
+using TMPro;
 
-namespace Wither.Components.Buttons
+namespace Wither.Components.Button
 {
     [HarmonyPatch(typeof(HudManager))]
     public static class HudManagerPatch
@@ -10,7 +13,7 @@ namespace Wither.Components.Buttons
         [HarmonyPatch(nameof(HudManager.Start))]
         public static void Start()
         {
-            Button.taskCompleteOverlayTextRenderer = HudManager.Instance.TaskCompleteOverlay.gameObject.GetComponent<TextRenderer>();
+            Button.taskCompleteOverlayTextRenderer = HudManager.Instance.TaskCompleteOverlay.gameObject.GetComponent<TextMeshPro>();
             Button.MakeButtonsAgain();
         }
         
@@ -19,7 +22,7 @@ namespace Wither.Components.Buttons
         public static void Update()
         {
             try { Button.SUpdate(); }
-            catch { /* ok, wat */ }        
+            catch (Exception e) { Logger<WitherPlugin>.Instance.LogError(e); }        
         }
     }
 
@@ -27,10 +30,21 @@ namespace Wither.Components.Buttons
     public static class PlayerControlOnDestroyPatch
     {
         [HarmonyPostfix]
-        [HarmonyPatch(nameof(PlayerControl.OnDestroy))]
+        [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.OnDestroy))]
         public static void OnDestroy()
         {
-            Button.allButtons.ToArray().ToList().ForEach(x => x.Dispose());
+            Button.buttons.ToArray().ToList().ForEach(x => x.Dispose());
+        }
+    }
+    
+    [HarmonyPatch(typeof(MeetingHud))]
+    public static class MeetingHudPatch
+    {
+        [HarmonyPostfix]
+        [HarmonyPatch(nameof(MeetingHud.Close))]
+        public static void Close()
+        {
+            Button.ResetAll();
         }
     }
 }

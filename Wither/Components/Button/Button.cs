@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
 using BepInEx.Configuration;
 using InnerNet;
+using Reactor;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using Object = UnityEngine.Object;
 
-namespace Wither.Components.Buttons
+namespace Wither.Components.Button
 {
     public abstract class Button : IDisposable
     {
-        public static List<Button> allButtons = new List<Button>();
-        private static List<Button> buttonButNot = new List<Button>();
+        public static readonly List<Button> buttons = new();
+        private static readonly List<Button> buttonButNot = new();
 
         protected GameObject gameObject;
         protected KillButtonManager killButtonManager;
@@ -21,7 +22,7 @@ namespace Wither.Components.Buttons
         protected ConfigEntry<string> offsetConfig;
         protected SpriteRenderer spriteRenderer;
         protected BoxCollider2D collider;
-        protected TextRenderer timerText;
+        protected TextMeshPro timerText;
         protected PassiveButton button;
         protected Vector2 offset;
         protected Sprite sprite;
@@ -62,8 +63,8 @@ namespace Wither.Components.Buttons
             button.OnClick.RemoveAllListeners();
             button.OnClick.AddListener((UnityAction)OnClickListener);
             aspectPosition.updateAlways = true;
-            allButtons.Add(this);
-            offsetConfig = WitherPlugin.Instance.Config.Bind("Button Positions", allButtons.IndexOf(this) + "B", "-1 -1");
+            buttons.Add(this);
+            offsetConfig = PluginSingleton<WitherPlugin>.Instance.Config.Bind("Button Positions", buttons.IndexOf(this) + "B", "-1 -1");
         }
 
         protected void InitializePart2()
@@ -87,9 +88,10 @@ namespace Wither.Components.Buttons
         }
         
 
-        public static TextRenderer taskCompleteOverlayTextRenderer;
+        public static TextMeshPro taskCompleteOverlayTextRenderer;
         public static void SUpdate()
         {
+            if (!PlayerControl.LocalPlayer) return;
             if (Input.GetKeyDown(KeyCode.F12))
             {
                 inEditMode = !inEditMode;
@@ -97,7 +99,7 @@ namespace Wither.Components.Buttons
                 {
                     HudManager.Instance.TaskCompleteOverlay.gameObject.SetActive(false);
 
-                    foreach (var button in allButtons)
+                    foreach (var button in buttons)
                     {
                         button.isSelectedForEdit = false;
                         button.offsetConfig.Value = $"{button.aspectPosition.DistanceFromEdge.x} {button.aspectPosition.DistanceFromEdge.y}";
@@ -112,9 +114,9 @@ namespace Wither.Components.Buttons
 
             PlayerControl.LocalPlayer.MyPhysics.body.constraints = inEditMode ? RigidbodyConstraints2D.FreezeAll : RigidbodyConstraints2D.FreezeRotation;
             
-            taskCompleteOverlayTextRenderer.Text = inEditMode ? "In Edit Mode, Press F12 To Exit" : "Task Completed!";
+            if (taskCompleteOverlayTextRenderer) taskCompleteOverlayTextRenderer.text = inEditMode ? "In Edit Mode, Press F12 To Exit" : "Task Completed!";
             
-            foreach (var button in allButtons)
+            foreach (var button in buttons)
             {
                 if (inEditMode)
                 {
@@ -141,16 +143,9 @@ namespace Wither.Components.Buttons
 
             if (Input.GetMouseButtonDown(0))
             {
-                Vector3 cursorPosition = Camera.main!.ScreenToWorldPoint(mousePos);
+                var cursorPosition = Camera.main!.ScreenToWorldPoint(mousePos);
                 cursorPosition.z = gameObject.transform.position.z;
-                if (collider.bounds.Contains(cursorPosition))
-                {
-                    isSelectedForEdit = true;
-                }
-                else
-                {
-                    isSelectedForEdit = false;
-                }
+                isSelectedForEdit = collider.bounds.Contains(cursorPosition);
             }
 
             if (Input.GetMouseButtonUp(0))
@@ -161,7 +156,7 @@ namespace Wither.Components.Buttons
             if (!isSelectedForEdit) return;
 
             mousePos = new Vector2(Mathf.Clamp(mousePos.x, 0, Screen.width), Mathf.Clamp(mousePos.y, 0, Screen.height));
-            Vector3 pos = Camera.main!.ScreenToWorldPoint(mousePos);
+            var pos = Camera.main!.ScreenToWorldPoint(mousePos);
             pos.z = gameObject.transform.position.z;
             pos = new Vector3((float) Math.Round(pos.x, 0), (float) Math.Round(pos.y, 0), pos.z);
             pos = HudManager.Instance.transform.InverseTransformPoint(pos);
@@ -169,7 +164,8 @@ namespace Wither.Components.Buttons
             origin.z = pos.z;
             var distance = origin - pos;
             distance = new Vector3(Mathf.Abs(distance.x), Mathf.Abs(distance.y), pos.z);
-            aspectPosition.DistanceFromEdge = Vector3.Lerp(aspectPosition.DistanceFromEdge, distance, 0.25f);
+            offset = Vector3.Lerp(aspectPosition.DistanceFromEdge, distance, 0.25f);
+            aspectPosition.DistanceFromEdge = offset;
         }
 
         private void ButtonUpdate()
@@ -186,6 +182,8 @@ namespace Wither.Components.Buttons
                 timer -= Time.deltaTime;
             SetCoolDown(timer);
             spriteRenderer.sprite = sprite;
+            aspectPosition.DistanceFromEdge = offset;
+            Update();
             if (!CanUse())
             {
                 spriteRenderer.color = Palette.DisabledClear;
@@ -221,6 +219,11 @@ namespace Wither.Components.Buttons
             OnClick();
         }
 
+        public void Reset()
+        {
+            SetCoolDown(timer = maxTimer);
+        }
+
         private static bool CommonCanUse =>
             (AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Started ||
              AmongUsClient.Instance.GameMode == GameModes.FreePlay) &&
@@ -233,7 +236,7 @@ namespace Wither.Components.Buttons
 	        isCoolingDown = num > 0f;
 	        if (isCoolingDown)
 	        {
-		        timerText.Text = Mathf.CeilToInt(_timer).ToString();
+		        timerText.text = Mathf.CeilToInt(_timer).ToString();
 		        timerText.gameObject.SetActive(true);
 		        return;
 	        }
@@ -247,6 +250,14 @@ namespace Wither.Components.Buttons
                 button.ButtonCool();
             }
         }
+
+        public static void ResetAll()
+        {
+            foreach (var button in buttons)
+            {
+                button.Reset();
+            }
+        }
         
         protected abstract bool CouldUse();
         protected abstract bool CanUse();
@@ -256,13 +267,13 @@ namespace Wither.Components.Buttons
         
         public void Dispose()
         {
-            allButtons.Remove(this);
+            buttons.Remove(this);
             Object.Destroy(gameObject);
         }
 
         public static void CreateButtons()
         {
-            Assembly assembly = typeof(WitherPlugin).Assembly;
+            var assembly = typeof(WitherPlugin).Assembly;
             foreach (var type in assembly.GetTypes())
             {
                 if (!type.IsSubclassOf(typeof(Button))) continue;

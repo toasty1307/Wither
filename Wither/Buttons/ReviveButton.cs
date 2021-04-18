@@ -1,41 +1,46 @@
-﻿using System.Collections.Generic;
-using Reactor;
-using Reactor.Extensions;
+﻿using Reactor.Extensions;
 using Reactor.Networking;
-using UnhollowerBaseLib;
 using UnityEngine;
+using Wither.Components.Button;
 using Wither.CustomGameOptions;
 using Wither.CustomRpc;
+using Wither.MonoBehaviour;
 using Wither.Utils;
-using Random = System.Random;
 
-namespace Wither.Components.Buttons
+namespace Wither.Buttons
 {
     public class ReviveButton : Button
     {
-        private static int Lives = GameOptions.CrewLives;
-
         protected override void OnClick()
         {
             Rpc<ReviveRpc>.Instance.Send(PlayerControl.LocalPlayer.PlayerId);
-            Lives--;
         }
 
         protected override void Init()
         {
             edgeAlignment = AspectPosition.EdgeAlignments.LeftBottom;
-            offset = new Vector2(0.6169749f, 1.5863363f);
+            offset = new Vector2(0.6169749f, 0.5863363f);
             maxTimer = GameOptions.ReviveCooldown;
-            sprite = AssetBundleLoader.ButtonTextureBundle.LoadAsset<Sprite>(Utils.StringNames.ReviveImage);
+            sprite = AssetBundleLoader.ButtonTextureBundle.LoadAsset<Sprite>("ReviveImage");
+            hasLimitedUse = true;
+            maxUses = GameOptions.CrewLives;
         }
 
         protected override bool CouldUse()
         {
-            return !PlayerControl.LocalPlayer.Data.IsImpostor && PlayerControl.LocalPlayer.Data.IsDead && Lives > 0;
+            return !PlayerControl.LocalPlayer.Data.IsImpostor && PlayerControl.LocalPlayer.Data.IsDead;
         }
 
         protected override bool CanUse()
         {
+            foreach (var rose in Object.FindObjectsOfType<WitherRose>())
+            {
+                if (Vector3.Distance(rose.transform.position, PlayerControl.LocalPlayer.transform.position) <= 1)
+                {
+                    return false;
+                }
+            }
+
             return true;
         }
     }

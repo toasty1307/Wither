@@ -43,7 +43,7 @@ namespace Wither.Components.Option
         [HarmonyPatch(nameof(ToggleOption.Toggle))]
         public static bool Toggle(ToggleOption __instance)
         {
-            return CustomToggleOption.Toggle(__instance);
+            return CustomDropdownOption.SToggle(__instance) && CustomToggleOption.Toggle(__instance);
         }
     }
 

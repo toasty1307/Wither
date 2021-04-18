@@ -3,7 +3,6 @@ using Reactor;
 using Reactor.Extensions;
 using Reactor.Networking;
 using UnityEngine;
-using Wither.Components.Buttons;
 using Wither.MonoBehaviour;
 using Wither.Utils;
 
@@ -18,10 +17,15 @@ namespace Wither.CustomRpc
         public override Vector2 Read(MessageReader reader) => reader.ReadVector2();
         public override void Handle(PlayerControl innerNetObject, Vector2 data)
         {
-            GameObject rose = AssetBundleLoader.PrefabBundle.LoadAsset<GameObject>(Utils.StringNames.WitherRose);
-            GameObject instantiate = Object.Instantiate(rose, ShipStatus.Instance.transform);
+            var rose = AssetBundleLoader.PrefabBundle.LoadAsset<GameObject>("WitherRose");
+            var instantiate = Object.Instantiate(rose, ShipStatus.Instance.transform);
             instantiate.transform.position = data;
             instantiate.AddComponent<WitherRose>();
+        }
+
+        public static void CoolSend(Vector2 position)
+        {
+            Rpc<InstantiateRoseRpc>.Instance.Send(position);
         }
     }
 }

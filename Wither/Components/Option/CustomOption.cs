@@ -1,28 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Reactor.Extensions;
+using Reactor;
 using Reactor.Networking;
 using UnhollowerBaseLib;
 using UnityEngine;
-using Wither.Utils;
 
 namespace Wither.Components.Option
 {
-    public class CustomOption
+    public abstract class CustomOption
     {
-        public static List<CustomOption> Options = new List<CustomOption>();
-        public static List<OptionBehaviour> OptionBehaviours = new List<OptionBehaviour>();
+        public static readonly List<CustomOption> Options = new();
+        public static readonly List<OptionBehaviour> OptionBehaviours = new();
         public readonly string Name;
         public readonly string Id;
         public readonly OptionType Type;
         public readonly bool ShowValue;
         public object Value;
-        public Color Color = Color.white;
+        public Color Color;
         public static bool ShowDefaultGameOptions = false;
         public static GameOptionsMenu menu;
         public static NumberOption NumberOptionPrefab;
         public static ToggleOption ToggleOptionPrefab;
+        public static ToggleOption SmolToggleOptionPrefab;
         public static StringOption StringOptionPrefab;
         public OptionBehaviour Data;
         public static float LowestY;
@@ -32,23 +32,65 @@ namespace Wither.Components.Option
             LowestY -= .5f;
             return menu.Children.Last().transform.localPosition.y + LowestY;
         }
+
+        public static readonly Dictionary<string, float> LocalLowestYs = new();
+        
+        private static float GetLowestY(string id)
+        {
+            CustomOption o = null;
+            foreach (var customOption in Options.Where(customOption => customOption.Id == id))
+            {
+                o = customOption;
+            }
+
+            if (!LocalLowestYs.ContainsKey(o!.Id))
+            {
+                LocalLowestYs.Add(o.Id, 0);
+            }
+
+            return o!.Data.transform.localPosition.y - (LocalLowestYs[o.Id] += 0.5f);
+        }
         
         public static void Position(Transform element)
         {
             element.localPosition = new Vector3(element.transform.localPosition.x, GetLowestY(), element.localPosition.z);
         }
+        
+        public static void Position(Transform element, string id)
+        {
+            element.localPosition = new Vector3(element.localPosition.x, GetLowestY(id), element.localPosition.z);
+        }
 
-        public CustomOption(string id, string name, OptionType type, object value, bool showValue = true)
+        public static void PositionAll()
+        {
+            LowestY = 0f;
+            foreach (var customOption in Options)
+            {
+                Position(customOption.Data.transform);
+                if (customOption is CustomDropdownOption {IsOpen: true} o)
+                {
+                    LowestY -= o.Values.Count * 0.5f;
+                    LocalLowestYs[o.Id] = 0;
+                    foreach (var toggleOption in o.SubOptions)
+                    {
+                        Position(toggleOption.transform, o.Id);
+                    }
+                }
+            }
+        }
+
+        protected CustomOption(string id, string name, OptionType type, object value, bool showValue = true)
         {
             Id = id;
             Name = name;
             Type = type;
             Value = value;
             ShowValue = showValue;
+            Color = Color.white;
             Options.Add(this);
         }
-        
-        public CustomOption(string id, string name, OptionType type, object value, Color color, bool showValue = true)
+
+        protected CustomOption(string id, string name, OptionType type, object value, Color color, bool showValue = true)
         {
             Id = id;
             Name = name;
@@ -64,9 +106,10 @@ namespace Wither.Components.Option
             if (!AmongUsClient.Instance.AmHost) return;
             NumberOptionPrefab = menu.GetComponentsInChildren<NumberOption>().Last();
             ToggleOptionPrefab = menu.GetComponentsInChildren<ToggleOption>().Last();
+            SmolToggleOptionPrefab = menu.GetComponentsInChildren<ToggleOption>().First();
             StringOptionPrefab = menu.GetComponentsInChildren<StringOption>().Last();
         }
-
+        
         public static void Create()
         {
             if (!AmongUsClient.Instance.AmHost) return;
@@ -78,7 +121,7 @@ namespace Wither.Components.Option
                 OptionBehaviours.Add(customOption.Data);
                 menu.Children = new Il2CppReferenceArray<OptionBehaviour>(OptionBehaviours.ToArray().Concat(menu.Children).ToArray());
             }
-            menu.GetComponentInParent<Scroller>().YBounds.max += Options.Count * .5f;
+            menu.GetComponentInParent<Scroller>().YBounds.max += (Options.Count) * .5f;
         }
 
         public static string ToString(string s)
@@ -87,7 +130,7 @@ namespace Wither.Components.Option
             foreach (var customOption in Options.ToList().Where(x => x.ShowValue))
             {
                 string html = customOption.Color.ToHtmlString();
-                options += $"[{html}]{customOption.Name}: {customOption.Value}[]\n";
+                options += $"<color={html}>{customOption.Name}: {customOption.Value}</color>\n";
             }
 
             if (!ShowDefaultGameOptions) return options;
@@ -121,7 +164,7 @@ namespace Wither.Components.Option
             }
             catch
             {
-                WitherPlugin.Logger.LogError("Error Sending Custom Game Options");
+                Logger<WitherPlugin>.Instance.LogError("Error Sending Custom Game Options");
             }
         }
 
@@ -144,14 +187,15 @@ namespace Wither.Components.Option
             }
         }
 
-        public virtual void CreateOption() { }
+        public abstract void CreateOption();
     }
 
     public enum OptionType : byte
     {
         Toggle,
         Number,
-        String
+        String,
+        Dropdown
     }
 
     public class OnValueChangedEventArgs : EventArgs
@@ -161,6 +205,19 @@ namespace Wither.Components.Option
         public OnValueChangedEventArgs(object value)
         {
             Value = value;
+        }
+    }
+    
+    public static class Extensions
+    {
+        public static string ToHtmlString(this Color color)
+        {
+            static byte ToByte(float f)
+            {
+                f = Mathf.Clamp01(f);
+                return (byte) (f * 255);
+            }
+            return $"#{ToByte(color.r):X2}{ToByte(color.g):X2}{ToByte(color.b):X2}{ToByte(color.a):X2}";
         }
     }
 }

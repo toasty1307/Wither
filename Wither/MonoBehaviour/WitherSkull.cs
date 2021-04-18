@@ -2,6 +2,7 @@
 using System.Linq;
 using Reactor;
 using UnityEngine;
+using Wither.Utils;
 
 namespace Wither.MonoBehaviour
 {
@@ -38,8 +39,8 @@ namespace Wither.MonoBehaviour
         {
             var pc = other.gameObject.GetComponent<PlayerControl>();
             if (pc == null || pc == wither || pc.Data.IsDead) return;
-            if (Utils.Withering.currentlyWithered.ContainsKey(pc)) return;
-            Utils.Withering.Wither(wither, pc);
+            Withering.wither = wither ? wither : PlayerControl.LocalPlayer;
+            Withering.Wither(pc);
             Destroy(gameObject);
         }
     }

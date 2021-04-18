@@ -2,6 +2,7 @@
 using System.Linq;
 using Reactor;
 using UnityEngine;
+using Wither.Utils;
 
 namespace Wither.MonoBehaviour
 {
@@ -14,15 +15,23 @@ namespace Wither.MonoBehaviour
 
         private void Start()
         {
-            wither = GameData.Instance.AllPlayers.ToArray().Where(x => x.IsImpostor && !x.Disconnected).ToArray()[0]._object;
+            try
+            {
+                wither = GameData.Instance.AllPlayers.ToArray().Where(x => x.IsImpostor && !x.Disconnected).ToArray().First()._object;
+            }
+            catch
+            {
+                Logger<WitherPlugin>.Instance.LogError("aight, so there is no imp it seems, why");
+            }
         }
 
         private void OnTriggerEnter2D(Collider2D other)
         {
             var pc = other.gameObject.GetComponent<PlayerControl>();
             if (pc == null || pc == wither || pc.Data.IsDead) return;
-            if (Utils.Withering.currentlyWithered.ContainsKey(pc)) return;
-            Utils.Withering.Wither(wither, pc);
+            Logger<WitherPlugin>.Instance.LogInfo($"Withering: {pc == PlayerControl.LocalPlayer}");
+            Withering.wither = wither ? wither : PlayerControl.LocalPlayer;
+            Withering.Wither(pc);
         }
     }
 }

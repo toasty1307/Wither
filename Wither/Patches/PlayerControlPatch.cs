@@ -6,16 +6,21 @@ using HarmonyLib;
 using PowerTools;
 using Reactor;
 using Reactor.Extensions;
+using Rewired;
 using UnhollowerBaseLib;
 using UnityEngine;
-using Wither.Components.Buttons;
+using Wither.Buttons;
+using Wither.Components.Button;
+using Wither.Utils;
 using Object = Il2CppSystem.Object;
 
 namespace Wither.Patches
 {
     [HarmonyPatch(typeof(PlayerControl))]
-    public static class KillPatch
+    public static class PlayerControlPatch
     {
+	    private static readonly int Mask = Shader.PropertyToID("_Mask");
+
 	    [HarmonyPrefix]
 	    [HarmonyPatch(nameof(PlayerControl.MurderPlayer))]
         public static bool MurderPlayer(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
@@ -26,11 +31,11 @@ namespace Wither.Patches
 			}
 			if (!target || __instance.Data.IsDead || !__instance.Data.IsImpostor || __instance.Data.Disconnected)
 			{
-				int num = target ? ((int)target.PlayerId) : -1;
-				Debug.LogWarning(string.Format("Bad kill from {0} to {1}", __instance.PlayerId, num));
+				int num = target ? target.PlayerId : -1;
+				Debug.LogWarning($"Bad kill from {__instance.PlayerId} to {num}");
 				return false;
 			}
-			GameData.PlayerInfo data = target.Data;
+			var data = target.Data;
 			if (data == null || data.IsDead)
 			{
 				// Debug.LogWarning("Missing target data for kill");
@@ -38,7 +43,7 @@ namespace Wither.Patches
 			}
 			if (__instance.AmOwner)
 			{
-				StatsManager instance = StatsManager.Instance;
+				var instance = StatsManager.Instance;
 				uint num2 = instance.ImpostorKills;
 				instance.ImpostorKills = num2 + 1U;
 				SoundManager.Instance.PlaySound(__instance.KillSfx, false, 0.8f);
@@ -48,7 +53,7 @@ namespace Wither.Patches
 			target.gameObject.layer = LayerMask.NameToLayer("Ghost");
 			if (target.AmOwner)
 			{
-				StatsManager instance2 = StatsManager.Instance;
+				var instance2 = StatsManager.Instance;
 				uint num2 = instance2.TimesMurdered;
 				instance2.TimesMurdered = num2 + 1U;
 				if (Minigame.Instance)
@@ -58,19 +63,19 @@ namespace Wither.Patches
 						Minigame.Instance.Close();
 						Minigame.Instance.Close();
 					}
-					catch { }
+					catch { /* ignored */ }
 				}
 				DestroyableSingleton<HudManager>.Instance.KillOverlay.ShowOne(__instance.Data, data);
 				DestroyableSingleton<HudManager>.Instance.ShadowQuad.gameObject.SetActive(false);
-				target.nameText.GetComponent<MeshRenderer>().material.SetInt("_Mask", 0);
+				target.nameText.GetComponent<MeshRenderer>().material.SetInt(Mask, 0);
 				target.RpcSetScanner(false);
-				ImportantTextTask importantTextTask = new GameObject("_Player").AddComponent<ImportantTextTask>();
+				var importantTextTask = new GameObject("_Player").AddComponent<ImportantTextTask>();
 				importantTextTask.transform.SetParent(__instance.transform, false);
 				if (!PlayerControl.GameOptions.GhostsDoTasks)
 				{
 					for (int i = 0; i < target.myTasks.Count; i++)
 					{
-						PlayerTask playerTask = (PlayerTask) target.myTasks[(Index) i];
+						var playerTask = (PlayerTask) target.myTasks[(Index) i];
 						playerTask.OnRemove();
 						UnityEngine.Object.Destroy(playerTask.gameObject);
 					}
@@ -90,9 +95,9 @@ namespace Wither.Patches
 
         public static IEnumerator CoPerformKill(PlayerControl source, PlayerControl target, KillAnimation animation)
         {
-	        FollowerCamera cam = Camera.main!.GetComponent<FollowerCamera>();
+	        var cam = Camera.main!.GetComponent<FollowerCamera>();
 	        bool isParticipant = PlayerControl.LocalPlayer == source || PlayerControl.LocalPlayer == target;
-	        PlayerPhysics sourcePhys = source.MyPhysics;
+	        var sourcePhys = source.MyPhysics;
 	        KillAnimation.SetMovement(source, false);
 	        KillAnimation.SetMovement(target, false);
 	        if (isParticipant)
@@ -100,7 +105,7 @@ namespace Wither.Patches
 		        cam.Locked = true;
 	        }
 	        target.Die(DeathReason.Kill);
-	        SpriteAnim sourceAnim = source.GetComponent<SpriteAnim>();
+	        var sourceAnim = source.GetComponent<SpriteAnim>();
 	        yield return new WaitForAnimationFinish(sourceAnim, animation.BlurAnim);
 	        if (target.CurrentPet != null)
 	        {
@@ -108,8 +113,8 @@ namespace Wither.Patches
 	        }
 	        sourceAnim.Play(sourcePhys.IdleAnim, 1f);
 	        KillAnimation.SetMovement(source, true);
-	        DeadBody deadBody = UnityEngine.Object.Instantiate<DeadBody>(animation.bodyPrefab);
-	        Vector3 vector = target.transform.position + animation.BodyOffset;
+	        var deadBody = UnityEngine.Object.Instantiate(animation.bodyPrefab);
+	        var vector = target.transform.position + animation.BodyOffset;
 	        vector.z = vector.y / 1000f;
 	        deadBody.transform.position = vector;
 	        deadBody.ParentId = target.PlayerId;
@@ -123,18 +128,33 @@ namespace Wither.Patches
         
         [HarmonyPostfix]
         [HarmonyPatch(nameof(PlayerControl.FixedUpdate))]
-        public static void FixedUpdate()
+        public static void FixedUpdate(PlayerControl __instance)
         {
-	        foreach (var collider in BedrockButton.bedrocks.Select(bedrock => bedrock.GetComponent<Collider2D>()).Where(collider => collider != null))
+			try
 	        {
-		        collider.enabled = PlayerControl.LocalPlayer.Data.IsImpostor && TransformButton.isTransformed;
+		        foreach (var collider in BedrockButton.bedrocks.Select(bedrock => bedrock.GetComponent<Collider2D>()).Where(collider => collider != null)) 
+				{
+					collider.enabled = PlayerControl.LocalPlayer.Data.IsImpostor && TransformButton.isTransformed; 
+				}
+	        }
+	        catch { /* ignored */ }
+#if DEBUG
+	        if (Input.GetKeyDown(KeyCode.F10))
+				PlayerControl.LocalPlayer.Data.IsImpostor = !PlayerControl.LocalPlayer.Data.IsImpostor;
+	        if (Input.GetKeyDown(KeyCode.F9))
+		        PlayerControl.LocalPlayer.Die(DeathReason.Exile);
+#endif
+	        Withering.Countdown(__instance);
+
+	        foreach (var playerControl in PotionButton.strongBoi)
+	        {
+		        if (!PlayerControl.LocalPlayer.Data.IsImpostor || !TransformButton.isTransformed) continue;
+		        if (Vector3.Distance(playerControl.GetTruePosition(), PlayerControl.LocalPlayer.GetTruePosition()) <= 1)
+		        {
+			        Button.ResetAll();
+		        }
 	        }
 
-	        foreach (var (playerControl, _) in Utils.Withering.currentlyWithered)
-	        {
-		        Utils.Withering.currentlyWithered[playerControl] -= Time.fixedDeltaTime;
-		        WitherPlugin.Logger.LogInfo(Utils.Withering.currentlyWithered[playerControl]);
-	        }
 	        HudManager.Instance.ReportButton.gameObject.SetActive(false);
 	        HudManager.Instance.KillButton.gameObject.SetActive(false);
 	        HudManager.Instance.ShadowQuad.gameObject.SetActive(false);
@@ -150,17 +170,17 @@ namespace Wither.Patches
 	        {
 		        __result = null;
 	        }
-	        Vector2 truePosition = __instance.GetTruePosition();
-	        Il2CppSystem.Collections.Generic.List<GameData.PlayerInfo> allPlayers = GameData.Instance.AllPlayers;
+	        var truePosition = __instance.GetTruePosition();
+	        var allPlayers = GameData.Instance.AllPlayers;
 	        for (int i = 0; i < allPlayers.Count; i++)
 	        {
-		        GameData.PlayerInfo playerInfo = allPlayers[(Index) i].Cast<GameData.PlayerInfo>();
+		        var playerInfo = allPlayers[(Index) i].Cast<GameData.PlayerInfo>();
 		        if (!playerInfo.Disconnected && playerInfo.PlayerId != __instance.PlayerId && !playerInfo.IsDead && !playerInfo.IsImpostor)
 		        {
-			        PlayerControl @object = playerInfo.Object;
+			        var @object = playerInfo.Object;
 			        if (@object)
 			        {
-				        Vector2 vector = @object.GetTruePosition() - truePosition;
+				        var vector = @object.GetTruePosition() - truePosition;
 				        float magnitude = vector.magnitude;
 				        if (magnitude <= num)
 				        {

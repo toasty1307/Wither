@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 442028408
+CRC: 1696764047
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -7,4 +7,7 @@ AssetBundleManifest:
       Dependencies: {}
     Info_1:
       Name: buttontextures
+      Dependencies: {}
+    Info_2:
+      Name: hats
       Dependencies: {}

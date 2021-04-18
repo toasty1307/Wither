@@ -1,15 +1,14 @@
 ﻿using System.Linq;
-using System.Runtime.CompilerServices;
-using Reactor;
 using Reactor.Extensions;
 using Reactor.Networking;
 using UnityEngine;
+using Wither.Components.Button;
 using Wither.CustomGameOptions;
 using Wither.CustomRpc;
 using Wither.Utils;
 using Object = UnityEngine.Object;
 
-namespace Wither.Components.Buttons
+namespace Wither.Buttons
 {
     public class ExplodeButton : Button
     {
@@ -32,13 +31,13 @@ namespace Wither.Components.Buttons
             edgeAlignment = AspectPosition.EdgeAlignments.LeftBottom;
             offset = new Vector2(1.716975f, 1.686336f);
             maxTimer = GameOptions.ExplodeCooldown;
-            sprite = AssetBundleLoader.ButtonTextureBundle.LoadAsset<Sprite>(Utils.StringNames.ExplodeImage);
+            sprite = AssetBundleLoader.ButtonTextureBundle.LoadAsset<Sprite>("ExplodeImage");
         }
 
         public static void InstantiateExplosion(Vector2 position)
         {
-            GameObject effect = AssetBundleLoader.PrefabBundle.LoadAsset<GameObject>(Utils.StringNames.Explosion);
-            GameObject instantiate = Object.Instantiate(effect, position, Quaternion.identity);
+            var effect = AssetBundleLoader.PrefabBundle.LoadAsset<GameObject>("Explosion");
+            var instantiate = Object.Instantiate(effect, position, Quaternion.identity);
             Object.Destroy(instantiate, 5f);
         }
 

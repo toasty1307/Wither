@@ -3,7 +3,7 @@ using Reactor;
 using Reactor.Extensions;
 using Reactor.Networking;
 using UnityEngine;
-using Wither.Components.Buttons;
+using Wither.Buttons;
 
 namespace Wither.CustomRpc
 {

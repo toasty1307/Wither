@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using HarmonyLib;
 
 namespace Wither.Patches
@@ -8,14 +9,14 @@ namespace Wither.Patches
     {
         [HarmonyPostfix]
         [HarmonyPatch(nameof(VersionShower.Start))]
-        public static void Start()
+        public static void Start(VersionShower __instance)
         {
-            string text = Reactor.Patches.ReactorVersionShower.Text.Text;
+            string text = Reactor.Patches.ReactorVersionShower.Text.text;
             int modsIndex = text.IndexOf("Mods", StringComparison.Ordinal);
             string substring = text.Substring(0, modsIndex);
-            substring += Utils.StringNames.ModName + " v" + Utils.StringNames.ModVersion;
+            substring += "Wither" + " v" + typeof(WitherPlugin).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
             substring += $"\n{text.Substring(modsIndex)}";
-            Reactor.Patches.ReactorVersionShower.Text.Text = substring;
+            Reactor.Patches.ReactorVersionShower.Text.text = substring;
         }
     }
 }

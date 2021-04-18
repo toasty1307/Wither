@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using InnerNet;
 using Reactor;
 using UnityEngine;
+using Wither.Buttons;
+using Object = UnityEngine.Object;
 
 namespace Wither.MonoBehaviour
 {
@@ -11,6 +14,8 @@ namespace Wither.MonoBehaviour
     public class Crack : UnityEngine.MonoBehaviour
     {
         public Crack(IntPtr ptr) : base(ptr) { }
+
+        public int id;
 
         public float radius;
 
@@ -20,11 +25,11 @@ namespace Wither.MonoBehaviour
             InvokeRepeating(nameof(CheckForCollision), 0f, 0.1f);
         }
 
-        public List<PlayerControl> playerInside = new List<PlayerControl>();
+        public List<PlayerControl> playerInside = new();
 
         private void CheckForCollision()
         {
-            foreach (PlayerControl player in playerInside.ToArray())
+            foreach (var player in playerInside.ToArray())
             {
                 player.Collider.enabled = !(Vector3.Distance(transform.position, player.GetTruePosition()) <= radius);
                 if (player.Collider.enabled) playerInside.Remove(player);
@@ -37,6 +42,25 @@ namespace Wither.MonoBehaviour
             if (pc == null) return;
             pc.Collider.enabled = false;
             playerInside.Add(pc);
+        }
+
+        private void OnDestroy()
+        {
+            foreach (var player in playerInside.ToArray())
+            {
+                player.Collider.enabled = true;
+            }
+            playerInside.Clear();
+        }
+
+        public static int GetAvailableId()
+        {
+            return BreakButton.cracks.Count;
+        }
+        
+        public static Crack GetCrackById(int id)
+        {
+            return FindObjectsOfType<Crack>().FirstOrDefault(crack => crack.id == id);
         }
     }
 }

@@ -9,6 +9,8 @@
         InstantiateSkull,
         Revive,
         SyncRoles,
-        SyncSettings
+        SyncSettings,
+        DestroyCrack,
+        Glow
     }
 }

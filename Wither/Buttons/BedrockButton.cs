@@ -1,17 +1,17 @@
 ﻿using System.Collections.Generic;
-using Reactor;
 using Reactor.Extensions;
 using Reactor.Networking;
 using UnityEngine;
+using Wither.Components.Button;
 using Wither.CustomGameOptions;
 using Wither.CustomRpc;
 using Wither.Utils;
 
-namespace Wither.Components.Buttons
+namespace Wither.Buttons
 {
     public class BedrockButton : Button
     {
-        public static List<GameObject> bedrocks = new List<GameObject>();
+        public static readonly List<GameObject> bedrocks = new();
 
         protected override bool CouldUse() => !PlayerControl.LocalPlayer.Data.IsImpostor && !PlayerControl.LocalPlayer.Data.IsDead;
 
@@ -27,13 +27,13 @@ namespace Wither.Components.Buttons
             edgeAlignment = AspectPosition.EdgeAlignments.LeftBottom;
             offset = new Vector2(0.6169749f, 0.5863363f);
             maxTimer = GameOptions.BedrockCooldown;
-            sprite = AssetBundleLoader.ButtonTextureBundle.LoadAsset<Sprite>(Utils.StringNames.BedrockImage);
+            sprite = AssetBundleLoader.ButtonTextureBundle.LoadAsset<Sprite>("BedrockImage");
         }
 
         public static void InstantiateBedrock(Vector2 position)
         {
-            GameObject bedrock = AssetBundleLoader.PrefabBundle.LoadAsset<GameObject>(Utils.StringNames.Bedrock);
-            GameObject bedrockInstantiated = Object.Instantiate(bedrock, ShipStatus.Instance.transform);
+            var bedrock = AssetBundleLoader.PrefabBundle.LoadAsset<GameObject>("Bedrock");
+            var bedrockInstantiated = Object.Instantiate(bedrock, ShipStatus.Instance.transform);
             bedrockInstantiated.transform.localScale /= 3;
             bedrockInstantiated.transform.position = position;
             bedrockInstantiated.layer = 9;

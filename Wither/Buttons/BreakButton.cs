@@ -1,16 +1,18 @@
-﻿using Reactor;
+﻿using System.Collections.Generic;
 using Reactor.Extensions;
 using Reactor.Networking;
 using UnityEngine;
+using Wither.Components.Button;
 using Wither.CustomGameOptions;
 using Wither.CustomRpc;
 using Wither.MonoBehaviour;
 using Wither.Utils;
 
-namespace Wither.Components.Buttons
+namespace Wither.Buttons
 {
     public class BreakButton : Button
     {
+        public static readonly List<Crack> cracks = new();
 
         protected override void OnClick()
         {
@@ -22,7 +24,7 @@ namespace Wither.Components.Buttons
             edgeAlignment = AspectPosition.EdgeAlignments.LeftBottom;
             offset = new Vector2(0.6169749f, 1.686336f);
             maxTimer = GameOptions.BreakCooldown;
-            sprite = AssetBundleLoader.ButtonTextureBundle.LoadAsset<Sprite>(Utils.StringNames.BreakImage);
+            sprite = AssetBundleLoader.ButtonTextureBundle.LoadAsset<Sprite>("BreakImage");
 
         }
 
@@ -36,11 +38,13 @@ namespace Wither.Components.Buttons
 
         public static void InstantiateCrack(Vector2 position)
         {
-            GameObject crack = AssetBundleLoader.PrefabBundle.LoadAsset<GameObject>(Utils.StringNames.Crack);
-            GameObject instantiate = Object.Instantiate(crack, ShipStatus.Instance.transform);
+            var crack = AssetBundleLoader.PrefabBundle.LoadAsset<GameObject>("Crack");
+            var instantiate = Object.Instantiate(crack, ShipStatus.Instance.transform);
             instantiate.transform.position = position;
             instantiate.layer = 9;
-            instantiate.AddComponent<Crack>();
+            var coolCrack = instantiate.AddComponent<Crack>();
+            coolCrack.id = Crack.GetAvailableId();
+            cracks.Add(coolCrack);
         }
     }
 }

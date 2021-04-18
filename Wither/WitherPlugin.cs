@@ -1,13 +1,11 @@
 ﻿using System;
 using BepInEx;
 using BepInEx.IL2CPP;
-using BepInEx.Logging;
 using HarmonyLib;
 using Reactor;
 using UnityEngine.SceneManagement;
-using Wither.Components.Buttons;
-using Wither.Components.Option;
-using Wither.Components.Roles;
+using Wither.Components.Button;
+using Wither.Components.Role;
 using Wither.CustomGameOptions;
 using Wither.Utils;
 
@@ -20,38 +18,23 @@ namespace Wither
     {
         public const string Id = "me.toasty_marshmallow.Wither";
 
-        public Harmony Harmony { get; } = new Harmony(Id);
-        
-        public static ManualLogSource Logger { get; private set; }
-
-        public static WitherPlugin Instance;
+        public Harmony Harmony { get; } = new(Id);
         
         public override void Load()
         {
-            Instance = this;
-            
-            Logger = Log;
-            
+            PluginSingleton<WitherPlugin>.Instance = this;
             RegisterCustomRpcAttribute.Register(this);
-
             RegisterInIl2CppAttribute.Register();
-            
             Harmony.PatchAll();
-            
             AssetBundleLoader.LoadBundles();
-            
             SceneManager.add_sceneLoaded((Action<Scene, LoadSceneMode>) ((s, _) =>
             {
                 if (s.buildIndex == 0) SceneManager.LoadScene(1);
             }));
-            
             Button.CreateButtons();
-            
             Role.CreateRoles();
-            
-            GameOptions.CreateOptions(); 
-            
-            CustomOption.UpdateAll();
+            GameOptions.CreateOptions();
+            Colors.SetUpColors();
         }
     }
 }

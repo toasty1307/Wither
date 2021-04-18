@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using Reactor.Networking;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace Wither.Components.Roles
+namespace Wither.Components.Role
 {
     #pragma warning disable 660,661
     public abstract class Role
@@ -21,9 +20,9 @@ namespace Wither.Components.Roles
         public abstract string Description { get; }
         public abstract bool HasTasks { get; }
         
-        public readonly List<PlayerControl> players = new List<PlayerControl>();
+        public readonly List<PlayerControl> players = new();
 
-        public static readonly List<Role> roles = new List<Role>();
+        public static readonly List<Role> roles = new();
         
         protected Role()
         {
@@ -36,7 +35,15 @@ namespace Wither.Components.Roles
             var impostors = players.Where(x => x.IsImpostor).ToList();
             var crew = players.Where(x => !x.IsImpostor).ToList();
 
-            // if (players.Count == 0 || impostors.Count == 0 || crew.Count == 0) return;
+#if DEBUG
+            if (AmongUsClient.Instance.GameMode == GameModes.FreePlay)
+            {
+                roles[0].players.Add(PlayerControl.LocalPlayer);
+                return;
+            }
+#endif
+
+            if (players.Count == 0 || impostors.Count == 0 || crew.Count == 0) return;
             
             foreach (var role in roles)
             {
@@ -47,27 +54,20 @@ namespace Wither.Components.Roles
                     {
                         for (int i = 0; i < role.Count; i++)
                         {
-                            while (true)
-                            {
-                                var player = crew[Random.Range(0, crew.Count)]._object;
-                                if (player.GetRole() != null) continue;
-                                role.players.Add(player);
-                                break;
-                            }
+                            var player = crew[Random.Range(0, crew.Count)]._object;
+                            crew.Remove(player.Data);
+                            role.players.Add(player);
                         }
+
                         continue;
                     }
                     case RoleSide.Impostor:
                     {
                         for (int i = 0; i < role.Count; i++)
                         {
-                            while (true)
-                            {
-                                var player = impostors[Random.Range(0, impostors.Count)]._object;
-                                if (player.GetRole() != null) continue;
-                                role.players.Add(player);
-                                break;
-                            }
+                            var player = impostors[Random.Range(0, impostors.Count)]._object;
+                            impostors.Remove(player.Data);
+                            role.players.Add(player);
                         }
                         continue;
                     }
@@ -75,13 +75,9 @@ namespace Wither.Components.Roles
                     {
                         for (int i = 0; i < role.Count; i++)
                         {
-                            while (true)
-                            {
-                                var player = players[Random.Range(0, players.Count)]._object;
-                                if (player.GetRole() != null) continue;
-                                role.players.Add(player);
-                                break;
-                            }
+                            var player = players[Random.Range(0, players.Count)]._object;
+                            players.Remove(player.Data);
+                            role.players.Add(player);
                         }
                         continue;
                     }
@@ -97,31 +93,31 @@ namespace Wither.Components.Roles
         {
             foreach (var role in roles)
             {
-                if (!role.ShowRole && (!role.ShowTeam || !Equals(PlayerControl.LocalPlayer.GetRole(), role))) continue;
+                if (!role.ShowRole && (!role.ShowTeam || !Equals(GetRole(PlayerControl.LocalPlayer), role))) continue;
                 foreach (var playerControl in role.players)
                 {
-                    playerControl.nameText.Color = role.Color;
+                    playerControl.nameText.color = role.Color;
                 }
             }
         }
 
-        public static IntroCutscene._CoBegin_d__11 IntroCutscene(IntroCutscene._CoBegin_d__11 __instance)
+        public static IntroCutscene.Nested_0 IntroCutscene(IntroCutscene.Nested_0 __instance)
         {
             var instance = __instance.__this;
-            Role role = PlayerControl.LocalPlayer.GetRole();
+            var role = GetRole(PlayerControl.LocalPlayer);
             if (role == null)
             {
                 bool imp = PlayerControl.LocalPlayer.Data.IsImpostor;
-                instance.Title.Text = imp ? "Impostor" : "Crewmate";
-                instance.Title.Color = imp ? Palette.ImpostorRed : Palette.CrewmateBlue;
+                instance.Title.text = imp ? "Impostor" : "Crewmate";
+                instance.Title.color = imp ? Palette.ImpostorRed : Palette.CrewmateBlue;
                 instance.ImpostorText.gameObject.SetActive(imp);
                 instance.BackgroundBar.material.color = imp ? Palette.ImpostorRed : Palette.CrewmateBlue;
                 return __instance;
             }
-            instance.Title.Text = role.Name;
-            instance.Title.Color = role.Color;
-            instance.ImpostorText.Text = role.Description;
-            instance.ImpostorText.Color = role.Color;
+            instance.Title.text = role.Name;
+            instance.Title.color = role.Color;
+            instance.ImpostorText.text = role.Description;
+            instance.ImpostorText.color = role.Color;
             instance.ImpostorText.gameObject.SetActive(true);
             instance.BackgroundBar.material.color = role.Color;
             return __instance;
@@ -129,35 +125,40 @@ namespace Wither.Components.Roles
 
         public static bool ComputeTasks()
         {
-            GameData.Instance.TotalTasks = 0;
-            GameData.Instance.CompletedTasks = 0;
-            for (int i = 0; i < GameData.Instance.AllPlayers.Count; i++)
+            try
             {
-                GameData.PlayerInfo playerInfo = (GameData.PlayerInfo) GameData.Instance.AllPlayers[(Index) i];
-                bool flag = true;
-                Role role = playerInfo._object.GetRole();
-                if (role != null)
+                GameData.Instance.TotalTasks = 0;
+                GameData.Instance.CompletedTasks = 0;
+                for (int i = 0; i < GameData.Instance.AllPlayers.Count; i++)
                 {
-                    flag = role.HasTasks;
-                }
-                if (!playerInfo.Disconnected &&
-                    playerInfo.Tasks != null &&
-                    playerInfo.Object &&
-                    (PlayerControl.GameOptions.GhostsDoTasks ||
-                     !playerInfo.IsDead) &&
-                    !playerInfo.IsImpostor &&
-                    flag)
-                {
-                    for (int j = 0; j < playerInfo.Tasks.Count; j++)
+                    var playerInfo = (GameData.PlayerInfo) GameData.Instance.AllPlayers[(Index) i];
+                    bool flag = true;
+                    var role = GetRole(playerInfo._object);
+                    if (role != null)
                     {
-                        GameData.Instance.TotalTasks++;
-                        if (playerInfo.Tasks[(Index) j].Cast<GameData.TaskInfo>().Complete)
+                        flag = role.HasTasks;
+                    }
+
+                    if (!playerInfo.Disconnected &&
+                        playerInfo.Tasks != null &&
+                        playerInfo.Object &&
+                        (PlayerControl.GameOptions.GhostsDoTasks ||
+                         !playerInfo.IsDead) &&
+                        !playerInfo.IsImpostor &&
+                        flag)
+                    {
+                        for (int j = 0; j < playerInfo.Tasks.Count; j++)
                         {
-                            GameData.Instance.CompletedTasks++;
+                            GameData.Instance.TotalTasks++;
+                            if (playerInfo.Tasks[(Index) j].Cast<GameData.TaskInfo>().Complete)
+                            {
+                                GameData.Instance.CompletedTasks++;
+                            }
                         }
                     }
                 }
             }
+            catch { /* no */ }
 
             return false;
         }
@@ -166,7 +167,7 @@ namespace Wither.Components.Roles
         {
             team.Clear();
             team.Add(PlayerControl.LocalPlayer);
-            Role role = PlayerControl.LocalPlayer.GetRole();
+            var role = GetRole(PlayerControl.LocalPlayer);
             if (role == null || !role.ShowTeam)
             {
                 foreach (var player in GameData.Instance.AllPlayers.ToArray().Where(x => !x.Disconnected))
@@ -186,25 +187,47 @@ namespace Wither.Components.Roles
             }
             return team;
         }
-
-        public static bool operator ==(Role r, string s)
+        
+        public static bool operator ==(Role role, string roleToCompare)
         {
-            return r?.Name == s;
+            return role?.Name == roleToCompare;
         }
 
-        public static bool operator !=(Role r, string s)
+        public static bool operator !=(Role r, string type)
         {
-            return !(r == s);
+            return !(r == type);
+        }
+        
+        public static Role GetRole(PlayerControl player)
+        {
+            foreach (var role in roles)
+            {
+                foreach (var playerControl in role.players)
+                {
+                    if (playerControl.PlayerId == player.PlayerId) return role;
+                }
+            }
+
+            return null;
         }
 
         public static void CreateRoles()
         {
-            Assembly assembly = typeof(WitherPlugin).Assembly;
+            var assembly = typeof(WitherPlugin).Assembly;
             foreach (var type in assembly.GetTypes())
             {
                 if (!type.IsSubclassOf(typeof(Role))) continue;
                 type.GetConstructor(new Type[0])?.Invoke(new object[0]);
             }
+        }
+
+        public static void ExileBegin(ExileController instance, GameData.PlayerInfo exiled)
+        {
+            var role = GetRole(exiled._object);
+            if (role == null || !PlayerControl.GameOptions.ConfirmImpostor) return;
+
+            string s1 = role.Count > 1 ? "An" : "The";
+            instance.completeString = $"{exiled.PlayerName} was {s1} {role.Name}";
         }
     }
 
@@ -213,13 +236,5 @@ namespace Wither.Components.Roles
         Impostor = 0,
         Crewmate = 1,
         Solo = 2
-    }
-    
-    public static class Extensions
-    {
-        public static Role GetRole(this PlayerControl player)
-        {
-            return Role.roles.FirstOrDefault(role => role.players.Any(playerControl => playerControl == player));
-        }
     }
 }

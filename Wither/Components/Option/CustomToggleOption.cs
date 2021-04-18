@@ -1,5 +1,6 @@
 ﻿using System;
 using BepInEx.Configuration;
+using Reactor;
 using Reactor.Networking;
 using Rewired.Data.Mapping;
 using UnityEngine;
@@ -26,14 +27,14 @@ namespace Wither.Components.Option
 
         public CustomToggleOption(string id, string name, bool value, bool showValue = true) : base(id, name, OptionType.Toggle, value, showValue)
         {
-            ConfigEntry = WitherPlugin.Instance.Config.Bind("Custom Game Options", id, Value);
+            ConfigEntry = PluginSingleton<WitherPlugin>.Instance.Config.Bind("Custom Game Options", Id, Value);
             Value = ConfigEntry.Value;
             OnValueChanged += (sender, args) => { ConfigEntry.Value = (bool) args.Value; Value = (bool) args.Value; };
         }
         
         public CustomToggleOption(string id, string name, bool value, Color color, bool showValue = true) : base(id, name, OptionType.Toggle, value, color, showValue)
         {
-            ConfigEntry = WitherPlugin.Instance.Config.Bind("Custom Game Options", id, Value);
+            ConfigEntry = PluginSingleton<WitherPlugin>.Instance.Config.Bind("Custom Game Options", Id, Value);
             Value = ConfigEntry.Value;
             OnValueChanged += (sender, args) => { ConfigEntry.Value = (bool) args.Value; Value = (bool) args.Value; };
         }
@@ -41,7 +42,7 @@ namespace Wither.Components.Option
         public override void CreateOption()
         {
             Data = Object.Instantiate(ToggleOptionPrefab.gameObject, menu.transform).GetComponent<ToggleOption>();
-            Data.TitleText.Text = Name;
+            Data.TitleText.text = Name;
             Data.CheckMark.enabled = ConfigEntry.Value;
             Position(Data.transform);
         }
@@ -61,7 +62,6 @@ namespace Wither.Components.Option
                     }
                 }
             }
-
             return true;
         }
 

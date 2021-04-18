@@ -3,14 +3,15 @@ using Hazel;
 using Reactor;
 using Reactor.Networking;
 
-namespace Wither.Components.Roles
+namespace Wither.Components.Role
 {
     [RegisterCustomRpc((uint) CustomRpc.CustomRpc.SyncRoles)]
     public class SyncRolesRpc : PlayerCustomRpc<WitherPlugin , byte[]>
     {
         public SyncRolesRpc(WitherPlugin plugin, uint id) : base(plugin, id) { }
 
-        public override RpcLocalHandling LocalHandling { get; } = RpcLocalHandling.None;
+        public override RpcLocalHandling LocalHandling => RpcLocalHandling.None;
+
         public override void Write(MessageWriter writer, byte[] data)
         {
             foreach (byte b in data)
@@ -22,7 +23,7 @@ namespace Wither.Components.Roles
         public override byte[] Read(MessageReader reader)
         {
             var data = new List<byte>();
-            foreach (var role in Role.roles)
+            foreach (var role in Components.Role.Role.roles)
             {
                 for (int i = 0; i < role.Count; i++)
                 {
@@ -36,7 +37,7 @@ namespace Wither.Components.Roles
         public override void Handle(PlayerControl innerNetObject, byte[] data)
         {
             int j = 0;
-            foreach (var role in Role.roles)
+            foreach (var role in Components.Role.Role.roles)
             {
                 role.players.Clear();
                 for (int i = 0; i < role.Count; i++)

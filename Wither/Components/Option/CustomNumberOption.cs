@@ -1,5 +1,6 @@
 ﻿using System;
 using BepInEx.Configuration;
+using Reactor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -32,7 +33,7 @@ namespace Wither.Components.Option
             Min = Mathf.Min(value, min);
             Max = Mathf.Max(value, max);
             Format = format;
-            ConfigEntry = WitherPlugin.Instance.Config.Bind("Custom Game Options", Id, Value);
+            ConfigEntry = PluginSingleton<WitherPlugin>.Instance.Config.Bind("Custom Game Options", Id, Value);
             ConfigEntry.Value = Mathf.Clamp(ConfigEntry.Value, Min, Max);
             Value = ConfigEntry.Value;
             OnValueChanged += (sender, args) => { ConfigEntry.Value = (float) args.Value; Value = (float) args.Value; };
@@ -44,7 +45,7 @@ namespace Wither.Components.Option
             Min = Mathf.Min(value, min);
             Max = Mathf.Max(value, max);
             Format = format;
-            ConfigEntry = WitherPlugin.Instance.Config.Bind("Custom Game Options", Id, Value);
+            ConfigEntry = PluginSingleton<WitherPlugin>.Instance.Config.Bind("Custom Game Options", Id, Value);
             ConfigEntry.Value = Mathf.Clamp(ConfigEntry.Value, Min, Max);
             Value = ConfigEntry.Value;
             OnValueChanged += (sender, args) => { ConfigEntry.Value = (float) args.Value; Value = (float) args.Value; };
@@ -53,7 +54,7 @@ namespace Wither.Components.Option
         public override void CreateOption()
         {
             Data = Object.Instantiate(NumberOptionPrefab.gameObject, menu.transform).GetComponent<NumberOption>();
-            Data.TitleText.Text = Name;
+            Data.TitleText.text = Name;
             Data.Increment = Increment;
             Data.ValidRange = new FloatRange(Min, Max);
             Data.FormatString = Format;

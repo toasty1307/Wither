@@ -11,20 +11,27 @@ namespace Wither.Utils
 
         public static AssetBundle PrefabBundle;
         
+        public static AssetBundle HatsBundle;
+        
         public static void LoadBundles()
         {
-            Assembly executingAssembly = typeof(WitherPlugin).Assembly;
+            var executingAssembly = typeof(WitherPlugin).Assembly;
             Stream stream;
             
             
             // ButtonTextureBundle
-            using (stream = executingAssembly.GetManifestResourceStream("Wither.AssetBundles." + StringNames.ButtonTextureAssetBundle))
+            using (stream = executingAssembly.GetManifestResourceStream("Wither.AssetBundles.buttontextures"))
                 ButtonTextureBundle = AssetBundle.LoadFromMemory(stream.ReadFully());
             // ButtonTextureBundle
             
             // PrefabBundle
-            using (stream = executingAssembly.GetManifestResourceStream("Wither.AssetBundles." + StringNames.PrefabAssetBundle))
+            using (stream = executingAssembly.GetManifestResourceStream("Wither.AssetBundles.prefabs"))
                 PrefabBundle = AssetBundle.LoadFromMemory(stream.ReadFully());
+            // PrefabBundle
+            
+            // PrefabBundle
+            using (stream = executingAssembly.GetManifestResourceStream("Wither.AssetBundles.hats"))
+                HatsBundle = AssetBundle.LoadFromMemory(stream.ReadFully());
             // PrefabBundle
         }
     }
